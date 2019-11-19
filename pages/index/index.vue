@@ -1,9 +1,178 @@
 <template>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
+	<view class="background-color" style="min-height: 100vh;">
+
+		<view style="padding: 20upx 50upx;" class="row-no-full center-col">
+
+			<view class="row-no-full" style="background-color: #FFFFFF;flex: 1;">
+				<input class="search-input" placeholder="请搜索商品" placeholder-class="search-placeholder tip-font-size" />
+
+				<view class="row-no-full center-col" style="padding-right: 20upx;">
+					<image style="width: 40upx;height: 40upx;" src="../../static/icon/search.png"></image>
+				</view>
+			</view>
+
+			<view class="row-no-full center-col" style="margin-left: 20upx;">
+				<image src="../../static/icon/message.png" style="width: 55upx;height: 55upx;"></image>
+			</view>
+
 		</view>
+
+		<view>
+
+			<swiper :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+				<swiper-item v-for="(v,i) in 3" :key='i'>
+					<view>
+						<image src="../../static/test/1d7b71d2e867df2a76a9937c3969001c.jpg" mode="widthFix" style="width: 100%;"></image>
+					</view>
+				</swiper-item>
+
+			</swiper>
+
+		</view>
+
+		<view class="margin-top">
+
+			<view class="messgae row-no-full center-col">
+
+				<view class="row-no-full center-col" style="margin-right: 20upx;">
+					<image src="../../static/icon/notice.png" style="width: 40upx;height: 40upx;"></image>
+				</view>
+
+				<text class="tip-font-size" style="flex: 1;overflow: hidden;white-space: nowrap;">
+					双十一全场一折
+				</text>
+
+				<view class="row-no-full center-col">
+					<image src="../../static/icon/right.png" style="width: 40upx;height: 40upx;"></image>
+				</view>
+
+
+			</view>
+
+		</view>
+
+		<view class="margin-top" style="background-color: #FFFFFF;">
+
+			<view class="row-no-full" style="padding: 40upx 40upx;">
+
+				<view class="col center-col" style="flex: 1;" v-for="(v,i) in 4" :key='i'>
+
+					<view class="col width-fit">
+						<view>
+							<image src="../../static/logo.png" style="width: 90upx;height: 90upx;"></image>
+						</view>
+
+						<text class="tip-font-size" style="text-align: center;">模块{{v+1}}</text>
+					</view>
+
+				</view>
+
+			</view>
+
+		</view>
+
+
+		<view class="margin-top" v-for="(v,i) in 2" :key='i'>
+
+			<view style="background-color: #FFFFFF;">
+
+				<view class="row-no-full center-row" style="padding: 20upx 0;">
+					<view>
+						<image src="../../static/icon/good.png" style="width: 40upx;height: 40upx;"></image>
+					</view>
+					<view class="normal-font-size" style="margin-left: 15upx;">店家推荐</view>
+				</view>
+
+				<view class="aline"></view>
+
+				<view style="margin-top: 30upx;padding-bottom: 30upx;">
+
+					<scroll-view :scroll-x="true">
+						<view class="row-no-full">
+							<view class="col" v-for="(v,i) in 5" :key='i' style="padding: 0 30upx;">
+
+								<view>
+									<image style="width: 200upx;height: 200upx;" src="../../static/logo.png"></image>
+								</view>
+
+								<view class="normal-font-size text-padding" >商品{{v+1}}</view>
+								
+								<view class="row-no-full text-padding" style="justify-content: space-between;margin-top: 40upx;">
+									<view class="col">
+										
+
+										<view class="red-color normal-font-size">¥ 8.00</view>
+
+										<view style="text-decoration: line-through;" class="tip-font-size gray-color">¥ 8.00</view>
+									</view>
+									
+									<view>
+										<image src="../../static/menu/shop_car_selected.png" style="width: 40upx;height: 40upx;"></image>
+									</view>
+									
+								</view>
+							</view>
+						</view>
+					</scroll-view>
+
+
+				</view>
+
+			</view>
+
+
+		</view>
+		
+		
+		<view>
+			<view class="normal-font-size row-no-full center-col" style="padding: 10upx 0;">
+				<view style="height: 1px;flex: 1;" class="black-background-color"></view>
+				<view style="margin: 0 45upx;">新品上架</view>
+				<view style="height: 1px;flex: 1;" class="black-background-color"></view>
+				
+			</view>
+			
+			<view style="width: 100vw;flex-wrap: wrap;justify-content: space-between;" class="row-no-full" >
+				
+				<view style="width: 48%;margin-top: 30upx;background-color: #FFFFFF;padding-bottom: 20upx;" v-for="(v,i) in 10" :key='i'>
+					
+					<view>
+						<image src="../../static/logo.png" style="width: 100%;" mode="widthFix"></image>
+					</view>
+					
+					<view class="normal-font-size text-padding">
+						商品{{v+1}}
+					</view>
+					
+					
+					<view class="row-no-full text-padding" style="justify-content: space-between;margin-top: 40upx;">
+						<view class="col">
+							
+					
+							<view class="red-color normal-font-size">¥ 8.00</view>
+					
+							<view style="text-decoration: line-through;" class="tip-font-size gray-color">¥ 8.00</view>
+						</view>
+						
+						<view>
+							<image src="../../static/menu/shop_car_selected.png" style="width: 40upx;height: 40upx;"></image>
+						</view>
+						
+					</view>
+					
+					
+					
+				</view>
+				
+				
+			</view>
+			
+		</view>
+		
+		<view style="height: 60px;">
+			
+		</view>
+		
 	</view>
 </template>
 
@@ -11,7 +180,11 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello'
+				title: 'Hello YY',
+				indicatorDots: true,
+				autoplay: true,
+				interval: 2000,
+				duration: 500
 			}
 		},
 		onLoad() {
@@ -24,29 +197,39 @@
 </script>
 
 <style>
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
+	.search-input {
+
+		background-color: #FFFFFF;
+		padding: 6upx 5upx;
+		flex: 1;
+
 	}
 
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin-top: 200rpx;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 50rpx;
+
+	.search-placeholder {
+
+		text-align: center;
+		color: #492c24;
+
 	}
 
-	.text-area {
-		display: flex;
-		justify-content: center;
+	.margin-top {
+
+		margin-top: 30upx;
 	}
 
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
+	.messgae {
+
+		padding: 28upx;
+		padding-left: 20upx;
+		padding-right: 10upx;
+		background-color: #FFFFFF;
+		color: #928f90;
 	}
+	
+	.text-padding{
+		
+		padding: 0 10upx;
+	}
+	
 </style>

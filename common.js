@@ -53,10 +53,10 @@ Vue.prototype.httpCommon = function(param) {
 
 	param.url = baseUrl + param.url;
 
-	//登录标识
-	param.header = {
-		openid: Vue.prototype.localGet('openid')
-	};
+	// //登录标识
+	// param.header = {
+	// 	openid: Vue.prototype.localGet('openid')
+	// };
 
 	return new Promise((resolve, reject) => {
 

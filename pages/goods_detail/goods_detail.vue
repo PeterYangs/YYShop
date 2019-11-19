@@ -1,0 +1,368 @@
+<template>
+	<view class="background-color" style="min-height: 100vh;">
+		<view>
+			<swiper :style="'height:'+adImgHeight+'px;'" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
+			 :duration="duration">
+				<swiper-item v-for="(v,i) in 3" :key='i'>
+					<view class="row-no-full center-row">
+						<image @load="getAdImg" src="../../static/logo.png" style="height: 300px;" :style="'width:'+adImgWidth+'px'"></image>
+					</view>
+				</swiper-item>
+
+			</swiper>
+		</view>
+
+		<view class="goods-item">
+
+			<view class="tip-font-size">商品名称</view>
+
+			<view class="row-no-full" style="margin-top: 30upx;justify-content: space-between;">
+
+				<view class="row-no-full center-col">
+					<view class="red-color title-font-size" style="margin-right: 28upx;">¥600-1200</view>
+					<view class="gray-color small-font-size">100人已买</view>
+				</view>
+
+				<view>
+					<view>
+						<image src="../../static/icon/share.png" style="width: 40upx;height: 40upx;"></image>
+					</view>
+				</view>
+
+			</view>
+
+
+		</view>
+
+		<view class="item-margin-top item-padding" style="background-color: #FFFFFF;">
+
+			<view class="row-no-full center-col" style="justify-content: space-between;">
+
+				<view class="row-no-full">
+					<view class="tip-font-size gray-color" style="width: 100upx;">选择</view>
+
+					<view class="tip-font-size">请选择产品规格</view>
+				</view>
+
+
+				<view>
+					<image src="../../static/icon/right.png" style="width: 38upx;height: 38upx;"></image>
+				</view>
+
+			</view>
+
+
+		</view>
+
+
+		<view class="item-margin-top item-padding" style="background-color: #FFFFFF;">
+
+			<view class="row-no-full center-col" style="margin-bottom: 40upx;">
+				<view style="flex: 1;height: 1upx;" class="gray-background-color"></view>
+				<view class="tip-font-size gray-color" style="padding: 0 40upx;">商品信息</view>
+				<view style="flex: 1;height: 1upx;" class="gray-background-color"></view>
+			</view>
+
+			<view>
+				<image src="../../static/logo.png" style="width: 100%;" mode="widthFix" :lazy-load="true"></image>
+			</view>
+
+
+		</view>
+
+
+		<view style="height: 200upx;">
+
+		</view>
+
+
+		<view class="bot">
+
+			<view class="row-no-full center-col" style="padding: 15upx 30upx;">
+
+				<view class="row-no-full center-col" style="flex: 1;justify-content: space-between;">
+					<view class="col center-col">
+						<image src="../../static/icon/customer.png" style="height: 40upx;width: 40upx;"></image>
+						<text class="small-font-size gray-color">客服</text>
+					</view>
+
+					<view class="col center-col">
+						<image src="../../static/menu/shop_car_normal.png" style="height: 40upx;width: 40upx;"></image>
+						<text class="small-font-size gray-color">购物车</text>
+					</view>
+				</view>
+
+				<view class="row-no-full center-col" style="flex: 3;padding-left: 40upx;">
+
+					<view @click="showSku()" style="margin-right: 15upx;" class="border-radius row-no-full center-col center-row tip-font-size shop-car">加入购物车</view>
+
+					<view class="border-radius row-no-full center-col center-row tip-font-size red-background-color buy-now">立即购买</view>
+
+
+				</view>
+
+
+			</view>
+
+
+
+
+		</view>
+
+
+
+		<uni-popup ref='goods_sku' type="bottom">
+
+			<view style="background-color: #FFFFFF;">
+
+
+
+				<view style="height: 80vh;padding: 20upx;padding-bottom: 5upx;" class="col">
+
+					<view>
+
+
+
+						<view class="row-no-full" style="justify-content: flex-end;">
+							<image @click="closeSku()" src="../../static/icon/close.png" style="width: 40upx;height: 40upx;"></image>
+						</view>
+
+
+						<view class="row-no-full" style="align-items: flex-end;">
+
+							<view style="margin-left: 80upx;margin-right: 50upx;">
+								<image src="../../static/logo.png" style="width: 200upx;height: 200upx;"></image>
+							</view>
+
+							
+							<view class="col" >
+								
+								<view class="red-color">¥6000</view>
+								
+								<view class="small-font-size">
+									编号:1121293729137982137									
+								</view>
+								
+							</view>
+							
+						</view>
+
+
+					</view>
+
+					<view style="flex: 1;overflow: hidden;margin-top: 30upx;">
+						<scroll-view :scroll-y="true" style="height: 100%;">
+							<!-- <view v-for="v in 100" :key='v'>{{v}}</view> -->
+							
+							<view>
+															
+								<goods-group :item="item">									
+								</goods-group>
+																								
+							</view>
+							
+						</scroll-view>
+					</view>
+
+					<view style="padding: 5upx 20upx;" class="row-no-full center-col">
+						<view class="col" style="width: 100%;">
+							<button class="red-background-color border-radius" style="color: #FFFFFF;width: 100%;">确定</button>
+						</view>
+					</view>
+
+
+				</view>
+
+
+
+			</view>
+
+		</uni-popup>
+
+	</view>
+</template>
+
+<script>
+	import UniPopup from '../../components/uni-popup/uni-popup.vue'
+	
+	// import GoodsItem from '../../components/goods-item/goods-item.vue'
+	
+	
+	
+	import GoodsGroup from '../../components/goods-group/goods-group.vue'
+	
+	export default {
+		data() {
+			return {
+				indicatorDots: true,
+				autoplay: true,
+				interval: 2000,
+				duration: 500,
+				adImgHeight: 300,
+				adImgWidth: 300,
+				item:{					
+				},
+				option:{}
+			}
+		},
+		methods: {
+
+			getAdImg(e) {
+
+				// console.log(e);
+
+				let realHeight = e.detail.height;
+
+				let realWidth = e.detail.width;
+
+
+				let w = realWidth * this.adImgHeight / realHeight;
+
+				this.adImgWidth = w;
+
+			},
+			showSku() {
+
+				this.$refs['goods_sku'].open();
+			},
+			closeSku() {
+				this.$refs['goods_sku'].close();
+			},
+			get_detail(){
+				
+				this.httpPost({
+					url:"/weapp/goods/goods_detail",
+					data:{id:this.option.id}
+				}).then((re)=>{
+					
+					// console.log(re);
+					
+					this.item=re.data;
+					
+				})
+				
+			}
+		},
+		components: {
+			UniPopup,
+			GoodsGroup
+			
+			
+		},
+		onLoad(e) {
+			
+			this.option=e;
+			
+			this.$refs['goods_sku'].open();
+			
+			this.get_detail();
+		}
+	}
+</script>
+
+<style>
+	.goods-item {
+		padding: 0 40upx;
+		padding-top: 40upx;
+		padding-bottom: 60upx;
+		background-color: #FFFFFF;
+	}
+
+	.bot {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		/* height: 100upx; */
+		background-color: #FFFFFF;
+		/* width: 100%; */
+		width: 100vw;
+
+		/* display: inline-flex; */
+
+	}
+
+	.shop-car {
+		flex: 1;
+		height: 80upx;
+		/* height: 100%; */
+		background-color: #E6A23C;
+		color: #FFFFFF;
+	}
+
+	.buy-now {
+		height: 80upx;
+		flex: 1;
+		color: #FFFFFF;
+	}
+
+	.border-radius {
+
+		border-radius: 3rem;
+	}
+
+	.item-margin-top {
+
+		margin-top: 20upx;
+	}
+
+	.item-padding {
+
+		padding: 20upx 30upx;
+
+	}
+	
+	.active-item{
+		
+		border: 1px solid #df3e27;
+		
+		width: -webkit-fit-content;
+		
+		background-color: #f9edeb;
+		
+		color: #df3e27;
+		
+		padding: 10upx 37upx;
+		
+	}
+	
+	.normal-item{
+		
+		border: 1px solid #f2f2f2;
+		
+		width: -webkit-fit-content;
+		
+		background-color: #f2f2f2;
+		
+		padding: 10upx 37upx;
+	}
+	
+	
+	.disable-item{
+		
+		border: 1px solid #f2f2f2;
+		
+		color: #bfbfbf;
+		
+		text-decoration: line-through;
+		
+		padding: 10upx 37upx;
+		
+		background-color: #f2f2f2;
+		
+	}
+	
+	
+	.item-right>view{
+		
+		margin-right: 30upx;
+		
+		margin-bottom: 30upx;
+		
+	}
+	
+	.item-bottom{
+		
+	}
+	
+	
+</style>
