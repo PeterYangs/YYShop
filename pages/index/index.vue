@@ -6,7 +6,7 @@
 			<view class="row-no-full" style="background-color: #FFFFFF;flex: 1;">
 				<input class="search-input" placeholder="请搜索商品" placeholder-class="search-placeholder tip-font-size" />
 
-				<view class="row-no-full center-col" style="padding-right: 20upx;">
+				<view class="row-no-full center-col" style="padding-right: 20upx;" @click="go()">
 					<image style="width: 40upx;height: 40upx;" src="../../static/icon/search.png"></image>
 				</view>
 			</view>
@@ -18,11 +18,12 @@
 		</view>
 
 		<view>
+			
 
 			<swiper :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-				<swiper-item v-for="(v,i) in 3" :key='i'>
+				<swiper-item v-for="(v,i) in adList" :key='i'>
 					<view>
-						<image src="../../static/test/1d7b71d2e867df2a76a9937c3969001c.jpg" mode="widthFix" style="width: 100%;"></image>
+						<image :src="getImgPrefix()+v.img" mode="widthFix" style="width: 100%;"></image>
 					</view>
 				</swiper-item>
 
@@ -39,7 +40,7 @@
 				</view>
 
 				<text class="tip-font-size" style="flex: 1;overflow: hidden;white-space: nowrap;">
-					双十一全场一折
+					{{messageList[messageIndex].title}}
 				</text>
 
 				<view class="row-no-full center-col">
@@ -184,14 +185,63 @@
 				indicatorDots: true,
 				autoplay: true,
 				interval: 2000,
-				duration: 500
+				duration: 500,
+				adList:[],
+				messageList:[
+					{title:"双十一全场1折",url:""},
+					{title:"呵呵哒",url:""},
+					
+				],
+				messageIndex:0
 			}
 		},
 		onLoad() {
-
+			
+			this.getAd();
+			
+			this.switchMessage();
+			
 		},
 		methods: {
-
+			go(){
+				
+				uni.redirectTo({
+					url:'../goods_detail/goods_detail?id=8'
+				})
+			},
+			getAd(){
+				
+				this.httpPost({
+					url:"/weapp/index_model/getAd"
+				}).then((re)=>{
+					
+					// console.log(re);
+					
+					this.adList=re.data;
+				})
+				
+			},
+			switchMessage(){
+				
+				let maxLength=this.messageList.length;
+				
+				setInterval(()=>{
+					
+					if(this.messageIndex==maxLength-1){
+						
+						this.messageIndex=0;
+					}else{
+						
+						this.messageIndex++;
+					}
+					
+					
+				},7000)
+				
+				
+				
+			}
+			
 		}
 	}
 </script>

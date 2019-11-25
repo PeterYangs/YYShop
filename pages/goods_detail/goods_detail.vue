@@ -3,9 +3,9 @@
 		<view>
 			<swiper :style="'height:'+adImgHeight+'px;'" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
 			 :duration="duration">
-				<swiper-item v-for="(v,i) in 3" :key='i'>
+				<swiper-item v-for="(v,i) in item.img" :key='i'>
 					<view class="row-no-full center-row">
-						<image @load="getAdImg" src="../../static/logo.png" style="height: 300px;" :style="'width:'+adImgWidth+'px'"></image>
+						<image @load="getAdImg" :src="getImgPrefix()+v" style="height: 300px;" :style="'width:'+adImgWidth+'px'"></image>
 					</view>
 				</swiper-item>
 
@@ -36,12 +36,29 @@
 
 		<view class="item-margin-top item-padding" style="background-color: #FFFFFF;">
 
-			<view class="row-no-full center-col" style="justify-content: space-between;">
+			<view class="row-no-full center-col" @click="showSku()" style="justify-content: space-between;">
 
 				<view class="row-no-full">
-					<view class="tip-font-size gray-color" style="width: 100upx;">选择</view>
+					
+					<template v-if='sku_index.difference'>
+						<view class="tip-font-size gray-color" style="width: 100upx;">已选择</view>
+						
+						<view  class="tip-font-size">
+							<text v-for="(v,i) in sku_index.difference" :key='i'><template v-if="i!=0">,</template>{{v}}</text>
+							
+						</view>
+						
+					</template>
+					
+					<template v-else>
+						<view class="tip-font-size gray-color" style="width: 100upx;">选择</view>
 
-					<view class="tip-font-size">请选择产品规格</view>
+						<view class="tip-font-size">请选择产品规格</view>
+					</template>
+					
+					
+
+
 				</view>
 
 
@@ -63,8 +80,13 @@
 				<view style="flex: 1;height: 1upx;" class="gray-background-color"></view>
 			</view>
 
-			<view>
-				<image src="../../static/logo.png" style="width: 100%;" mode="widthFix" :lazy-load="true"></image>
+			<!-- 商品详情图 -->
+			<view class="col">
+
+				<view v-for="(v,i) in item.detail_img" :key='i'>
+
+					<image :src="getImgPrefix()+v" style="width: 100%;" mode="widthFix" :lazy-load="true"></image>
+				</view>
 			</view>
 
 
@@ -96,7 +118,7 @@
 
 					<view @click="showSku()" style="margin-right: 15upx;" class="border-radius row-no-full center-col center-row tip-font-size shop-car">加入购物车</view>
 
-					<view class="border-radius row-no-full center-col center-row tip-font-size red-background-color buy-now">立即购买</view>
+					<view @click="showSku()" class="border-radius row-no-full center-col center-row tip-font-size red-background-color buy-now">立即购买</view>
 
 
 				</view>
@@ -131,20 +153,24 @@
 						<view class="row-no-full" style="align-items: flex-end;">
 
 							<view style="margin-left: 80upx;margin-right: 50upx;">
-								<image src="../../static/logo.png" style="width: 200upx;height: 200upx;"></image>
+
+								<image v-if="getObj(sku_index,'img')" :src="getImgPrefix()+getObj(sku_index,'img')" style="width: 200upx;height: 200upx;"></image>
+
+								<image v-else :src="getImgPrefix()+item.img[0]" style="width: 200upx;height: 200upx;"></image>
+
 							</view>
 
-							
-							<view class="col" >
-								
-								<view class="red-color">¥6000</view>
-								
+
+							<view class="col">
+
+								<view class="red-color"><text v-if="getObj(sku_index,'price')">¥{{getObj(sku_index,'price')}}</text></view>
+
 								<view class="small-font-size">
-									编号:1121293729137982137									
+									<text v-if="getObj(sku_index,'number')">编号:{{getObj(sku_index,'number')}}</text>
 								</view>
-								
+
 							</view>
-							
+
 						</view>
 
 
@@ -153,14 +179,14 @@
 					<view style="flex: 1;overflow: hidden;margin-top: 30upx;">
 						<scroll-view :scroll-y="true" style="height: 100%;">
 							<!-- <view v-for="v in 100" :key='v'>{{v}}</view> -->
-							
+
 							<view>
-															
-								<goods-group :item="item">									
+
+								<goods-group :item="item" @success='setSku'>
 								</goods-group>
-																								
+
 							</view>
-							
+
 						</scroll-view>
 					</view>
 
@@ -184,13 +210,13 @@
 
 <script>
 	import UniPopup from '../../components/uni-popup/uni-popup.vue'
-	
+
 	// import GoodsItem from '../../components/goods-item/goods-item.vue'
-	
-	
-	
+
+
+
 	import GoodsGroup from '../../components/goods-group/goods-group.vue'
-	
+
 	export default {
 		data() {
 			return {
@@ -200,9 +226,21 @@
 				duration: 500,
 				adImgHeight: 300,
 				adImgWidth: 300,
-				item:{					
+				item: {
+					category_id: 0,
+					detail_img: [],
+					goods_sku: [],
+					id: 0,
+					img: [],
+					name: "",
+					seller_id: -1,
+					sku: {},
+					status: 1
+
 				},
-				option:{}
+				option: {},
+				//当前sku
+				sku_index: {}
 			}
 		},
 		methods: {
@@ -228,33 +266,48 @@
 			closeSku() {
 				this.$refs['goods_sku'].close();
 			},
-			get_detail(){
+			get_detail() {
+				
+				console.log(this.option);
 				
 				this.httpPost({
-					url:"/weapp/goods/goods_detail",
-					data:{id:this.option.id}
-				}).then((re)=>{
-					
+					url: "/weapp/goods/detail",
+					data: {
+						id: this.option.id
+					}
+				}).then((re) => {
+
 					// console.log(re);
-					
-					this.item=re.data;
-					
+
+					// this.item=re.data;
+
+					this.setItem(this.item, re.data)
+
 				})
-				
+
+			},
+			setSku(obj, arr) {
+
+				this.sku_index = obj;
+
+				// console.log(obj);
+
 			}
 		},
 		components: {
 			UniPopup,
 			GoodsGroup
-			
-			
+
+
 		},
 		onLoad(e) {
+
+			this.option = e;
 			
-			this.option=e;
-			
-			this.$refs['goods_sku'].open();
-			
+			// console.log(e);
+
+			// this.$refs['goods_sku'].open();
+
 			this.get_detail();
 		}
 	}
@@ -310,59 +363,55 @@
 		padding: 20upx 30upx;
 
 	}
-	
-	.active-item{
-		
+
+	.active-item {
+
 		border: 1px solid #df3e27;
-		
+
 		width: -webkit-fit-content;
-		
+
 		background-color: #f9edeb;
-		
+
 		color: #df3e27;
-		
+
 		padding: 10upx 37upx;
-		
+
 	}
-	
-	.normal-item{
-		
+
+	.normal-item {
+
 		border: 1px solid #f2f2f2;
-		
+
 		width: -webkit-fit-content;
-		
+
 		background-color: #f2f2f2;
-		
+
 		padding: 10upx 37upx;
 	}
-	
-	
-	.disable-item{
-		
+
+
+	.disable-item {
+
 		border: 1px solid #f2f2f2;
-		
+
 		color: #bfbfbf;
-		
+
 		text-decoration: line-through;
-		
+
 		padding: 10upx 37upx;
-		
+
 		background-color: #f2f2f2;
-		
+
 	}
-	
-	
-	.item-right>view{
-		
+
+
+	.item-right>view {
+
 		margin-right: 30upx;
-		
+
 		margin-bottom: 30upx;
-		
+
 	}
-	
-	.item-bottom{
-		
-	}
-	
-	
+
+	.item-bottom {}
 </style>
