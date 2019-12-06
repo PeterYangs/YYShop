@@ -116,7 +116,7 @@
 
 				<view class="row-no-full center-col" style="flex: 3;padding-left: 40upx;">
 
-					<view @click="showSku()" style="margin-right: 15upx;" class="border-radius row-no-full center-col center-row tip-font-size shop-car">加入购物车</view>
+					<view @click="showShopCar()" style="margin-right: 15upx;" class="border-radius row-no-full center-col center-row tip-font-size shop-car">加入购物车</view>
 
 					<view @click="showSku()" class="border-radius row-no-full center-col center-row tip-font-size red-background-color buy-now">立即购买</view>
 
@@ -176,8 +176,8 @@
 
 					</view>
 
-					<view style="flex: 1;overflow: hidden;margin-top: 30upx;">
-						<scroll-view :scroll-y="true" style="height: 100%;">
+					<view style="flex: 1;overflow: hidden;margin-top: 30upx;" class="col">
+						<scroll-view :scroll-y="true" >
 							<!-- <view v-for="v in 100" :key='v'>{{v}}</view> -->
 
 							<view>
@@ -188,9 +188,18 @@
 							</view>
 
 						</scroll-view>
+						
+						<view class="tip-font-size row-no-full center-col" style="margin-top: 30upx;justify-content: space-between;">
+							<text>数量</text>
+							<uni-number-box :value="submitItem.num" @change='changeNum'></uni-number-box>
+						</view>
+						
 					</view>
+					
+					
+					
 
-					<view style="padding: 5upx 20upx;" class="row-no-full center-col">
+					<view  @click="submit()" style="padding: 5upx 20upx;" class="row-no-full center-col">
 						<view class="col" style="width: 100%;">
 							<button class="red-background-color border-radius" style="color: #FFFFFF;width: 100%;">确定</button>
 						</view>
@@ -216,6 +225,8 @@
 
 
 	import GoodsGroup from '../../components/goods-group/goods-group.vue'
+	
+	import uniNumberBox from "../../components/uni-number-box/uni-number-box.vue"
 
 	export default {
 		data() {
@@ -240,7 +251,17 @@
 				},
 				option: {},
 				//当前sku
-				sku_index: {}
+				sku_index: {},
+				//shop_car和buy_now
+				submitType:'',
+				submitItem:{
+					goods_id:'',
+					id:'',
+					num:1,
+					seller_id:-1
+					
+					
+				}
 			}
 		},
 		methods: {
@@ -262,6 +283,14 @@
 			showSku() {
 
 				this.$refs['goods_sku'].open();
+			},
+			
+			showShopCar(){
+				
+				this.submitType='shop_car';
+				
+				this.$refs['goods_sku'].open();
+				
 			},
 			closeSku() {
 				this.$refs['goods_sku'].close();
@@ -290,13 +319,71 @@
 
 				this.sku_index = obj;
 
+				this.submitItem.goods_id=obj.goods_id;
+				
+				this.submitItem.id=obj.id;
+				
+				this.submitItem.seller_id=this.item.seller_id;
+				
+
 				// console.log(obj);
 
+			},
+			addShopCar(){
+				
+				return new Promise((success,fail)=>{
+					
+					this.httpPost({
+						url:'/weapp/shop_car/addGoods',
+						data:this.submitItem
+					}).then((re)=>{
+						
+						// console.log(re);
+						
+						
+						
+						if(re.code==1){
+							
+							success(re);
+						}
+						
+					})
+					
+				});
+				
+				
+			},
+			submit(){
+				
+				
+				if(this.submitType=='shop_car'){
+					
+					this.addShopCar().then((re)=>{
+						
+						this.$refs['goods_sku'].close();
+						
+						uni.showToast({
+							icon:'success',
+							title:'加入购物车成功'
+						})
+					});
+					
+					
+					
+				}  
+				
+				
+			},
+			changeNum(value){
+				
+				this.submitItem.num=value;
+				
 			}
 		},
 		components: {
 			UniPopup,
-			GoodsGroup
+			GoodsGroup,
+			uniNumberBox
 
 
 		},

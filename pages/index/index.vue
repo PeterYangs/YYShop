@@ -18,7 +18,7 @@
 		</view>
 
 		<view>
-			
+
 
 			<swiper :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
 				<swiper-item v-for="(v,i) in adList" :key='i'>
@@ -73,7 +73,7 @@
 		</view>
 
 
-		<view class="margin-top" v-for="(v,i) in 2" :key='i'>
+		<view class="margin-top" :key='i'>
 
 			<view style="background-color: #FFFFFF;">
 
@@ -90,27 +90,29 @@
 
 					<scroll-view :scroll-x="true">
 						<view class="row-no-full">
-							<view class="col" v-for="(v,i) in 5" :key='i' style="padding: 0 30upx;">
+							<view class="col" v-for="(v,i) in recommendGoodsList" :key='i' style="padding: 0 30upx;max-width: 250upx;">
 
-								<view>
-									<image style="width: 200upx;height: 200upx;" src="../../static/logo.png"></image>
+								<view @click="toGoodsDetail(v.id)">
+									<image style="width: 200upx;height: 200upx;" :src="getImgPrefix()+v.main_img"></image>
 								</view>
 
-								<view class="normal-font-size text-padding" >商品{{v+1}}</view>
-								
-								<view class="row-no-full text-padding" style="justify-content: space-between;margin-top: 40upx;">
-									<view class="col">
-										
+								<view class="col">
+									<view class="tip-font-size text-padding" style="overflow: hidden;white-space: nowrap;">{{v.name}}</view>
 
-										<view class="red-color normal-font-size">¥ 8.00</view>
+									<view class="row-no-full text-padding" style="justify-content: space-between;margin-top: 40upx;">
+										<view class="col">
 
-										<view style="text-decoration: line-through;" class="tip-font-size gray-color">¥ 8.00</view>
+
+											<view class="red-color tip-font-size">¥ {{v.min_price}}</view>
+
+											<view style="text-decoration: line-through;" class="small-font-size gray-color">¥ {{v.min_price}}</view>
+										</view>
+
+										<view>
+											<image src="../../static/menu/shop_car_selected.png" style="width: 40upx;height: 40upx;"></image>
+										</view>
+
 									</view>
-									
-									<view>
-										<image src="../../static/menu/shop_car_selected.png" style="width: 40upx;height: 40upx;"></image>
-									</view>
-									
 								</view>
 							</view>
 						</view>
@@ -123,57 +125,61 @@
 
 
 		</view>
-		
-		
+
+
 		<view>
 			<view class="normal-font-size row-no-full center-col" style="padding: 10upx 0;">
 				<view style="height: 1px;flex: 1;" class="black-background-color"></view>
 				<view style="margin: 0 45upx;">新品上架</view>
 				<view style="height: 1px;flex: 1;" class="black-background-color"></view>
-				
+
 			</view>
-			
-			<view style="width: 100vw;flex-wrap: wrap;justify-content: space-between;" class="row-no-full" >
-				
-				<view style="width: 48%;margin-top: 30upx;background-color: #FFFFFF;padding-bottom: 20upx;" v-for="(v,i) in 10" :key='i'>
-					
+
+			<view style="width: 100vw;flex-wrap: wrap;justify-content: space-between;" class="row-no-full">
+
+				<view class="col" style="align-content: stretch;width: 48%;margin-top: 30upx;background-color: #FFFFFF;padding-bottom: 20upx;"
+				 v-for="(v,i) in newGoodsList" :key='i' @click="toGoodsDetail(v.id)">
+
 					<view>
-						<image src="../../static/logo.png" style="width: 100%;" mode="widthFix"></image>
+						<image :src="getImgPrefix()+v.main_img" style="width: 100%;" mode="widthFix"></image>
 					</view>
-					
-					<view class="normal-font-size text-padding">
-						商品{{v+1}}
-					</view>
-					
-					
-					<view class="row-no-full text-padding" style="justify-content: space-between;margin-top: 40upx;">
-						<view class="col">
-							
-					
-							<view class="red-color normal-font-size">¥ 8.00</view>
-					
-							<view style="text-decoration: line-through;" class="tip-font-size gray-color">¥ 8.00</view>
-						</view>
+
+					<view style="flex: 1;display: flex;flex-direction: column-reverse;">
 						
-						<view>
-							<image src="../../static/menu/shop_car_selected.png" style="width: 40upx;height: 40upx;"></image>
+						<view style="display: flex;flex-direction: column-reverse;">
+							<view class="normal-font-size text-padding">
+								{{v.name}}
+							</view>
+
+
+							<view class="row-no-full text-padding" style="justify-content: space-between;margin-top: 40upx;">
+								<view class="col">
+
+
+									<view class="red-color tip-font-size">¥ {{v.min_price}}</view>
+
+									<view style="text-decoration: line-through;" class="small-font-size gray-color">¥ {{v.min_price}}</view>
+								</view>
+
+								<view>
+									<image src="../../static/menu/shop_car_selected.png" style="width: 40upx;height: 40upx;"></image>
+								</view>
+
+							</view>
+
 						</view>
-						
 					</view>
-					
-					
-					
 				</view>
-				
-				
+
+
 			</view>
-			
+
 		</view>
-		
+
 		<view style="height: 60px;">
-			
+
 		</view>
-		
+
 	</view>
 </template>
 
@@ -186,62 +192,134 @@
 				autoplay: true,
 				interval: 2000,
 				duration: 500,
-				adList:[],
-				messageList:[
-					{title:"双十一全场1折",url:""},
-					{title:"呵呵哒",url:""},
-					
+				adList: [],
+				messageList: [{
+						title: "双十一全场1折",
+						url: ""
+					},
+					{
+						title: "呵呵哒",
+						url: ""
+					},
+
 				],
-				messageIndex:0
+				messageIndex: 0,
+				recommendGoodsList: [],
+				newGoodsList: []
 			}
 		},
 		onLoad() {
-			
-			this.getAd();
-			
-			this.switchMessage();
-			
+
+			this.getInit();
+
 		},
 		methods: {
-			go(){
-				
+			go() {
+
 				uni.redirectTo({
-					url:'../goods_detail/goods_detail?id=8'
+					url: '../goods_detail/goods_detail?id=8'
 				})
 			},
-			getAd(){
-				
+			getAd() {
+
 				this.httpPost({
-					url:"/weapp/index_model/getAd"
-				}).then((re)=>{
-					
+					url: "/weapp/index_model/getAd"
+				}).then((re) => {
+
 					// console.log(re);
-					
-					this.adList=re.data;
+
+					this.adList = re.data;
 				})
-				
+
 			},
-			switchMessage(){
-				
-				let maxLength=this.messageList.length;
-				
-				setInterval(()=>{
-					
-					if(this.messageIndex==maxLength-1){
-						
-						this.messageIndex=0;
-					}else{
-						
+			/**
+			 * 切换消息
+			 */
+			switchMessage() {
+
+				let maxLength = this.messageList.length;
+
+				setInterval(() => {
+
+					if (this.messageIndex == maxLength - 1) {
+
+						this.messageIndex = 0;
+					} else {
+
 						this.messageIndex++;
 					}
-					
-					
-				},7000)
-				
-				
-				
+
+
+				}, 7000)
+
+
+
+			},
+			getMessage() {
+
+				this.httpGet({
+					url: "/weapp/index_model/getMessage"
+				}).then((re) => {
+
+					// console.log(re);
+
+					this.messageList = re.data;
+
+					this.switchMessage();
+
+				})
+
+			},
+			getInit() {
+
+				this.getAd();
+
+				// this.switchMessage();
+
+				this.getMessage();
+
+				this.getRecommend();
+
+				this.getNewGoods();
+			},
+			/**
+			 * 获取推荐商品
+			 */
+			getRecommend() {
+
+				this.httpPost({
+					url: "/weapp/goods/recommendGoods"
+				}).then((re) => {
+
+					// console.log(re);
+
+					this.recommendGoodsList = re.data;
+				})
+
+			},
+			toGoodsDetail(id) {
+
+				uni.navigateTo({
+					url: '../goods_detail/goods_detail?id=' + id
+				})
+
+			},
+			/**
+			 * 获取新品
+			 */
+			getNewGoods() {
+
+				this.httpPost({
+					url: "/weapp/goods/getNewGoods"
+				}).then((re) => {
+
+					// console.log(re);
+
+					this.newGoodsList = re.data;
+				})
+
 			}
-			
+
 		}
 	}
 </script>
@@ -276,10 +354,9 @@
 		background-color: #FFFFFF;
 		color: #928f90;
 	}
-	
-	.text-padding{
-		
+
+	.text-padding {
+
 		padding: 0 10upx;
 	}
-	
 </style>

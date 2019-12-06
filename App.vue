@@ -2,12 +2,59 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			
+			
+			// #ifdef MP-WEIXIN
+			
+			if(!this.localGet('weapp_session_key')) this.getSession();
+			
+			// #endif
+			
+			
+			
 		},
 		onShow: function() {
 			console.log('App Show')
 		},
 		onHide: function() {
 			console.log('App Hide')
+		},
+		methods:{
+			
+			getSession(){
+				
+				uni.showLoading({
+					mask:true,
+					title:"加载中..."
+				})
+				
+				let that=this;
+				
+				uni.login({
+					success(code) {
+						
+						that.httpPost({
+							url:"/weapp/login/getSessionKey",
+							data:{code:code.code}
+						}).then((re)=>{
+							
+							// console.log(re);
+							
+							let sessionKey=re.data.session_key;
+							
+							that.localSave('weapp_session_key',sessionKey,60*60*3)
+							
+							
+							uni.hideLoading()
+						})
+						
+					}
+				})
+				
+				
+			}
+			
+			
 		}
 	}
 </script>

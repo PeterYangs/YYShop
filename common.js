@@ -54,15 +54,29 @@ Vue.prototype.httpCommon = function(param) {
 	param.url = baseUrl + param.url;
 
 	// //登录标识
-	// param.header = {
-	// 	openid: Vue.prototype.localGet('openid')
-	// };
+	param.header = {
+		token: Vue.prototype.localGet('token')
+	};
 
 	return new Promise((resolve, reject) => {
 
 		param.success = function(res) {
 
 			if (param.loading === true) uni.hideLoading()
+			
+			
+			// console.log(res);
+			
+			if(res.data.code>=10&&res.data.code<=30){
+				
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
+				
+				return reject(res);
+				
+			}
+			
 
 			resolve(res);
 		}
