@@ -198,21 +198,45 @@ Vue.prototype.localRemove = function(key, prefix = 'weapp_') {
 
 Vue.prototype.getObj = function(obj, attr, defaultValue = '') {
 
-
-	let tempObj = Vue.prototype.cloneObj(obj)
-
 	try {
-
+	// console.log(obj);
+	
+	// return false;
+	
+	let tempObj = Vue.prototype.cloneObj(obj)
+	
+	// console.log(tempObj);
+	
+	// return false;
 		let arr = attr.split('.');
+		
+		// console.log(arr);
 		for (let i in arr) {
-
-			tempObj = tempObj[arr[i]]
+			
+			let isHave= tempObj.hasOwnProperty(arr[i]);
+				
+			if(isHave){
+				tempObj = tempObj[arr[i]]
+			}else{
+				
+				return defaultValue;
+			}
+				
+			 
+			
+			
+			
+			// console.log(tempObj);
+			
+			
 		}
 
 		return tempObj;
 
 	} catch (e) {
-
+		
+		// console.log(e);
+		
 		return defaultValue;
 	}
 

@@ -110,7 +110,7 @@
 
 					<view class="col center-col">
 						<image src="../../static/menu/shop_car_normal.png" style="height: 40upx;width: 40upx;"></image>
-						<text class="small-font-size gray-color">购物车</text>
+						<text class="small-font-size gray-color" @click="toShopCar()">购物车</text>
 					</view>
 				</view>
 
@@ -378,6 +378,12 @@
 				
 				this.submitItem.num=value;
 				
+			},
+			toShopCar(){
+				
+				uni.switchTab({
+					url:'../shop_car/shop_car'
+				})
 			}
 		},
 		components: {

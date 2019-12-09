@@ -94,6 +94,11 @@
 		align-items: center;
 	}
 	
+	.space{
+		
+		justify-content: space-between;
+	}
+	
 	.wrap {
 	
 		white-space: pre-wrap;
