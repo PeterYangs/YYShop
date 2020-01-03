@@ -37,12 +37,67 @@
             "path" : "pages/login/login",
             "style" : {}
         }
+        ,{
+            "path" : "pages/confirm/confirm",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/address_list/address_list",
+            "style" : {
+				"navigationBarTitleText":"地址列表",
+				"navigationBarBackgroundColor": "#F8F8F8",
+				"backgroundColor": "#F8F8F8",
+				"navigationBarTextStyle":"black"
+			}
+        }
+        ,{
+            "path" : "pages/address_edit/address_edit",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/pay/pay",
+            "style" : {
+				"navigationBarTitleText":"收银台",
+				"navigationBarBackgroundColor": "#F8F8F8",
+				"backgroundColor": "#F8F8F8",
+				"navigationBarTextStyle":"black"
+			}
+        }
+        ,{
+            "path" : "pages/order_list/order_list",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/refund/refund",
+            "style" : {
+				"navigationBarTitleText":"申请退款",
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"backgroundColor": "#FFFFFF",
+				"navigationBarTextStyle":"black"
+			}
+        }
+        ,{
+            "path" : "pages/after_sale/after_sale",
+            "style" : {
+				"navigationBarTitleText":"申请售后"
+				
+			}
+        }
+        ,{
+            "path" : "pages/refund_list/refund_list",
+            "style" : {
+				"navigationBarTitleText":"售后列表",
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"backgroundColor": "#FFFFFF",
+				"navigationBarTextStyle":"black"
+			}
+        }
     ],
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
+		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "YYShop",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarBackgroundColor": "#c24a28",
+		"backgroundColor": "#c24a28"	
 	},
 	"tabBar":{
 		"color":"#4c332b",

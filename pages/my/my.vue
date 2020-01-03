@@ -33,12 +33,12 @@
 
 					<view class="row-no-full" style="justify-content: space-around;padding-bottom: 40upx;padding-top: 20upx;">
 
-						<view class="col center-col">
+						<view class="col center-col" @click="to_order_list(1,1)">
 							<image src="../../static/status/待付款.png" style="width: 70upx;height: 70upx;"></image>
 							<text class="tip-font-size">待付款</text>
 						</view>
 
-						<view class="col center-col">
+						<view class="col center-col" @click="to_order_list(11,2)">
 							<image src="../../static/status/待发货.png" style="width: 70upx;height: 70upx;"></image>
 							<text class="tip-font-size">待发货</text>
 						</view>
@@ -88,6 +88,21 @@
 							<image src="../../static/icon/right.png" style="height: 40upx;width: 40upx;"></image>
 						</view>
 
+					</view>
+					
+					<text class="line"></text>
+					
+					<view @click="to_refund_list()" class="row-no-full center-col" style="justify-content: space-between;">
+					
+						<view class="row-no-full center-col">
+							<image src="../../static/icon/sale_after.png" style="width: 40upx;height: 40upx;"></image>
+							<text>售后列表</text>
+						</view>
+					
+						<view>
+							<image src="../../static/icon/right.png" style="height: 40upx;width: 40upx;"></image>
+						</view>
+					
 					</view>
 
 
@@ -173,6 +188,20 @@
 				
 				uni.navigateTo({
 					url:'../login/login'
+				})
+				
+			},
+			to_order_list(status,index){
+				
+				uni.navigateTo({
+					url:'../order_list/order_list?status='+status+'&index='+index
+				})
+				
+			},
+			to_refund_list(){
+				
+				uni.navigateTo({
+					url:"../refund_list/refund_list"
 				})
 				
 			}

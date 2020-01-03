@@ -19,7 +19,7 @@
 			<view class="row-no-full" style="margin-top: 30upx;justify-content: space-between;">
 
 				<view class="row-no-full center-col">
-					<view class="red-color title-font-size" style="margin-right: 28upx;">¥600-1200</view>
+					<view class="red-color title-font-size" style="margin-right: 28upx;">¥{{item.price_interval}}</view>
 					<view class="gray-color small-font-size">100人已买</view>
 				</view>
 
@@ -39,24 +39,24 @@
 			<view class="row-no-full center-col" @click="showSku()" style="justify-content: space-between;">
 
 				<view class="row-no-full">
-					
+
 					<template v-if='sku_index.difference'>
 						<view class="tip-font-size gray-color" style="width: 100upx;">已选择</view>
-						
-						<view  class="tip-font-size">
+
+						<view class="tip-font-size">
 							<text v-for="(v,i) in sku_index.difference" :key='i'><template v-if="i!=0">,</template>{{v}}</text>
-							
+
 						</view>
-						
+
 					</template>
-					
+
 					<template v-else>
 						<view class="tip-font-size gray-color" style="width: 100upx;">选择</view>
 
 						<view class="tip-font-size">请选择产品规格</view>
 					</template>
-					
-					
+
+
 
 
 				</view>
@@ -108,9 +108,18 @@
 						<text class="small-font-size gray-color">客服</text>
 					</view>
 
-					<view class="col center-col">
-						<image src="../../static/menu/shop_car_normal.png" style="height: 40upx;width: 40upx;"></image>
-						<text class="small-font-size gray-color" @click="toShopCar()">购物车</text>
+					<view class="col center-col" @click="toShopCar()">
+						<!-- <uni-badge text="1" :inverted="true" size="small"> -->
+
+						<view class="relative">
+							<image src="../../static/menu/shop_car_normal.png" style="height: 40upx;width: 40upx;">
+							</image>
+
+							<view v-if="shop_car_num" class="shop_car_num absolute red-background-color row-no-full center-col center-row">{{shop_car_num}}</view>
+
+						</view>
+						<!-- </uni-badge> -->
+						<text class="small-font-size gray-color">购物车</text>
 					</view>
 				</view>
 
@@ -118,7 +127,7 @@
 
 					<view @click="showShopCar()" style="margin-right: 15upx;" class="border-radius row-no-full center-col center-row tip-font-size shop-car">加入购物车</view>
 
-					<view @click="showSku()" class="border-radius row-no-full center-col center-row tip-font-size red-background-color buy-now">立即购买</view>
+					<view @click="showBuyNow()" class="border-radius row-no-full center-col center-row tip-font-size red-background-color buy-now">立即购买</view>
 
 
 				</view>
@@ -177,7 +186,7 @@
 					</view>
 
 					<view style="flex: 1;overflow: hidden;margin-top: 30upx;" class="col">
-						<scroll-view :scroll-y="true" >
+						<scroll-view :scroll-y="true">
 							<!-- <view v-for="v in 100" :key='v'>{{v}}</view> -->
 
 							<view>
@@ -188,18 +197,18 @@
 							</view>
 
 						</scroll-view>
-						
+
 						<view class="tip-font-size row-no-full center-col" style="margin-top: 30upx;justify-content: space-between;">
 							<text>数量</text>
 							<uni-number-box :value="submitItem.num" @change='changeNum'></uni-number-box>
 						</view>
-						
-					</view>
-					
-					
-					
 
-					<view  @click="submit()" style="padding: 5upx 20upx;" class="row-no-full center-col">
+					</view>
+
+
+
+
+					<view @click="submit()" style="padding: 5upx 20upx;" class="row-no-full center-col">
 						<view class="col" style="width: 100%;">
 							<button class="red-background-color border-radius" style="color: #FFFFFF;width: 100%;">确定</button>
 						</view>
@@ -225,8 +234,11 @@
 
 
 	import GoodsGroup from '../../components/goods-group/goods-group.vue'
-	
+
 	import uniNumberBox from "../../components/uni-number-box/uni-number-box.vue"
+
+
+	// import uniBadge from '../../components/uni-badge/uni-badge.vue'
 
 	export default {
 		data() {
@@ -246,22 +258,25 @@
 					name: "",
 					seller_id: -1,
 					sku: {},
-					status: 1
+					status: 1,
+					price_interval:''
 
 				},
 				option: {},
 				//当前sku
 				sku_index: {},
 				//shop_car和buy_now
-				submitType:'',
-				submitItem:{
-					goods_id:'',
-					id:'',
-					num:1,
-					seller_id:-1
-					
-					
-				}
+				submitType: '',
+				submitItem: {
+					goods_id: '',
+					id: '',
+					num: 1,
+					seller_id: -1
+
+
+				},
+				//购物车商品数量
+				shop_car_num:0
 			}
 		},
 		methods: {
@@ -284,21 +299,29 @@
 
 				this.$refs['goods_sku'].open();
 			},
-			
-			showShopCar(){
+
+			showShopCar() {
+
+				this.submitType = 'shop_car';
+
+				this.$refs['goods_sku'].open();
+
+			},
+			showBuyNow(){
 				
-				this.submitType='shop_car';
+				this.submitType = 'buy_now';
 				
 				this.$refs['goods_sku'].open();
 				
 			},
+			
 			closeSku() {
 				this.$refs['goods_sku'].close();
 			},
 			get_detail() {
-				
+
 				console.log(this.option);
-				
+
 				this.httpPost({
 					url: "/weapp/goods/detail",
 					data: {
@@ -319,89 +342,129 @@
 
 				this.sku_index = obj;
 
-				this.submitItem.goods_id=obj.goods_id;
-				
-				this.submitItem.id=obj.id;
-				
-				this.submitItem.seller_id=this.item.seller_id;
-				
+				this.submitItem.goods_id = obj.goods_id;
+
+				this.submitItem.id = obj.id;
+
+				this.submitItem.seller_id = this.item.seller_id;
+
 
 				// console.log(obj);
 
 			},
-			addShopCar(){
-				
-				return new Promise((success,fail)=>{
-					
+			addShopCar() {
+
+				return new Promise((success, fail) => {
+
 					this.httpPost({
-						url:'/weapp/shop_car/addGoods',
-						data:this.submitItem
-					}).then((re)=>{
-						
+						url: '/weapp/shop_car/addGoods',
+						data: this.submitItem
+					}).then((re) => {
+
 						// console.log(re);
-						
-						
-						
-						if(re.code==1){
-							
+
+
+
+						if (re.code == 1) {
+
 							success(re);
 						}
-						
+
 					})
-					
+
 				});
-				
-				
+
+
 			},
-			submit(){
+			submit() {
 				
 				
-				if(this.submitType=='shop_car'){
-					
-					this.addShopCar().then((re)=>{
-						
+				if(!this.sku_index.id) return uni.showToast({
+					title:'请选择完整的规格',
+					icon:'none'
+				})
+				
+				
+				// console.log(this.sku_index.id);
+				
+				// return false;
+
+				if (this.submitType == 'shop_car') {
+
+					this.addShopCar().then((re) => {
+
 						this.$refs['goods_sku'].close();
 						
+						this.getShopCarNum();
+						
 						uni.showToast({
-							icon:'success',
-							title:'加入购物车成功'
+							icon: 'success',
+							title: '加入购物车成功'
 						})
 					});
+
+
+
+				}else if(this.submitType == 'buy_now'){
+					
+					let param='param='+this.sku_index.id+'*'+this.submitItem.num;
 					
 					
+					// console.log(param);
 					
-				}  
-				
-				
+					uni.navigateTo({
+						url:'../confirm/confirm?'+param
+					})
+					
+				}
+
+
 			},
-			changeNum(value){
-				
-				this.submitItem.num=value;
-				
+			changeNum(value) {
+
+				this.submitItem.num = value;
+
 			},
-			toShopCar(){
-				
+			toShopCar() {
+
 				uni.switchTab({
-					url:'../shop_car/shop_car'
+					url: '../shop_car/shop_car'
 				})
+			},
+			getShopCarNum(){
+				
+				this.httpPost({
+					url:"/weapp/goods/getShopCarNum"
+				}).then((re)=>{
+					
+					// console.log(re);
+					
+					this.shop_car_num=re.data;
+					
+				})
+				
 			}
 		},
 		components: {
 			UniPopup,
 			GoodsGroup,
-			uniNumberBox
+			uniNumberBox,
+			// uniBadge
 
 
 		},
 		onLoad(e) {
 
 			this.option = e;
-			
+
 			// console.log(e);
 
 			// this.$refs['goods_sku'].open();
 
 			this.get_detail();
+			
+			
+			this.getShopCarNum();
 		}
 	}
 </script>
@@ -507,4 +570,17 @@
 	}
 
 	.item-bottom {}
+
+
+	.shop_car_num {
+
+		right: -15upx;
+		top: -5upx;
+		border-radius: 50%;
+		width: 25upx;
+		height: 25upx;
+		font-size: 18upx;
+		color: #FFFFFF;
+
+	}
 </style>

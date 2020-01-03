@@ -1,7 +1,7 @@
 <template>
 	<view class="tip-font-size col" style="min-height: 100vh;background-color: #F2F2F2;padding: 20upx 20upx;">
 
-<!-- 
+
 		<view v-if='list.length>=1' v-for="(vv,ii) in list" :key="ii" style="background-color: #FFFFFF;border-radius: .3rem;padding: 30upx 40upx;margin-bottom: 30upx;">
 
 			<view class="row-no-full center-col" style="margin-bottom: 30upx;">
@@ -45,7 +45,7 @@
 									<view class="normal-font-size red-color">¥ {{getObj(v,'goods_sku.price')}}</view>
 
 									<view>
-										<uni-number-box :value="v.num"></uni-number-box>
+										<uni-number-box   :value="v.num" @change='changeNum($event,v)'></uni-number-box>
 									</view>
 
 								</view>
@@ -67,12 +67,9 @@
 				</uni-swipe-action-item>
 			</uni-swipe-action>
 
+		</view>
 
 
-
-
-
-		</view> -->
 
 
 		<view v-if="list.length<=0" style="height:90vh;" class="col center-row center-col">
@@ -88,20 +85,28 @@
 			<view class="row-no-full">
 
 
-				<view class="row-no-full" style="flex: 3;padding: 20upx 10upx;">
+				<view class="row-no-full center-col" style="flex: 3;padding: 20upx 30upx;justify-content: space-between;padding-left: 40upx;">
 
-					<view class="row-no-full">
+					<view  v-if="checkButtonStatus==1" class="row-no-full" @click="selectAll()" >
 						<view>
 							<image src="../../static/icon/no_check.png" style="width: 40upx;height: 40upx;"></image>
 						</view>
 
-						<view>全选</view>
+						<view style="margin-left: 10upx;">全选</view>
+					</view>
+					
+					<view v-if="checkButtonStatus==2" class="row-no-full" @click="cancelAll()">
+						<view>
+							<image src="../../static/icon/checked.png" style="width: 40upx;height: 40upx;"></image>
+						</view>
+					
+						<view style="margin-left: 10upx;">全选</view>
 					</view>
 					
 					
-					<view>
+					<view class="red-color">
 						
-						<view>合计：¥ 9.9</view>
+						<view>合计：¥ {{getTotalPrice}}</view>
 						
 					</view>
 					
@@ -111,10 +116,11 @@
 				
 				
 				
-				<view style="flex: 1;color: #FFFFFF;" class="red-background-color row-no-full center-col center-row">去结算</view>
+				<view @click="submit()" style="flex: 1;color: #FFFFFF;" class="red-background-color row-no-full center-col center-row">去结算</view>
+				
+			
 				
 			</view>
-
 
 
 		</view>
@@ -126,8 +132,8 @@
 
 <script>
 	import uniNumberBox from "../../components/uni-number-box/uni-number-box.vue"
-	// import uniSwipeAction from '../../components/uni-swipe-action/uni-swipe-action.vue'
-	// import uniSwipeActionItem from '../../components/uni-swipe-action-item/uni-swipe-action-item.vue'
+	import uniSwipeAction from '../../components/uni-swipe-action/uni-swipe-action.vue'
+	import uniSwipeActionItem from '../../components/uni-swipe-action-item/uni-swipe-action-item.vue'
 
 	export default {
 		data() {
@@ -140,7 +146,8 @@
 						backgroundColor: '#c24a28'
 					}
 				}],
-				checkedId: ''
+				checkedId: '',
+				checkButtonStatus:2
 			}
 		},
 		methods: {
@@ -148,9 +155,7 @@
 			getShopCarList() {
 
 
-				uni.showLoading({
-
-				})
+				uni.showLoading({})
 				this.httpPost({
 					url: "/weapp/shop_car/getShopCarList"
 				}).then((re) => {
@@ -209,19 +214,153 @@
 
 
 
+			},
+			selectAll(){
+				
+				
+				this.httpPost({
+					url:"/weapp/shop_car/selectAll"
+				}).then((re)=>{
+					
+					this.getShopCarList();
+					
+					this.checkButtonStatus=2;
+					
+				})
+				
+				
+			},
+			cancelAll(){
+				
+				this.httpPost({
+					url:"/weapp/shop_car/cancelAll"
+				}).then((re)=>{
+					
+					this.getShopCarList();
+					
+					this.checkButtonStatus=1;
+					
+				})
+				
+			},
+			changeNum(e,item){
+				
+				// console.log(e);
+				
+				// console.log(item);
+				
+				
+				if(e!=item.num){
+					
+					this.httpPost({
+						url:"/weapp/shop_car/changeNum",
+						data:{id:item.id,num:e}
+					}).then(()=>{
+						
+						this.getShopCarList();
+					})
+					
+				}
+				
+				
+			},
+			submit(){
+				
+				
+				// console.log('ok');
+				
+				//{sku_id:1,num:3}
+				let goods_array=[];
+				
+				let param='';
+				
+				for(let i in this.list){
+					
+					
+					for(let j in this.list[i]){
+						
+						
+						if(this.list[i][j].status==1){
+							
+							// total+=this.list[i][j]
+							
+							let temp={};
+							
+							let item=this.list[i][j];
+							
+							if(!item) continue;
+							
+							// total+= Number(item.price);
+							
+							temp.sku_id=item.goods_sku_id;
+							
+							temp.num=item.num;
+							
+							goods_array.push(temp);
+							
+							
+							param+=(item.goods_sku_id+'*'+item.num+'!');
+							
+							
+							
+						}
+						
+					}
+				}
+				
+				param=param.substr(0,param.length-1)
+				
+				
+				uni.navigateTo({
+					url:'../confirm/confirm?param='+param
+				})
+				
+				
 			}
 
 		},
 		components: {
 			uniNumberBox,
-			// uniSwipeAction,
-			// uniSwipeActionItem
+			uniSwipeAction,
+			uniSwipeActionItem
 
 		},
 		onShow() {
 
 			this.getShopCarList();
 
+		},
+		computed:{
+			
+			getTotalPrice(){
+				
+				
+				let total=0;
+				for(let i in this.list){
+					
+					
+					for(let j in this.list[i]){
+						
+						
+						if(this.list[i][j].status==1){
+							
+							// total+=this.list[i][j]
+							
+							let item=this.list[i][j].goods_sku;
+							
+							if(!item) continue;
+							
+							total+= Number(item.price)*Number(this.list[i][j].num);
+							
+							
+						}
+						
+					}
+				}
+				
+				return total;
+				
+			}
 		}
 	}
 </script>

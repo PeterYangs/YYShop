@@ -3,11 +3,11 @@
 
 
 		<!-- #ifdef MP-WEIXIN -->
-		
+
 		<view>
 			<button type="primary" open-type="getPhoneNumber" @getphonenumber='getPhone'>微信用户一键登录</button>
-		</view>	
-			
+		</view>
+
 		<!-- #endif -->
 
 		<view style="margin-top: 20upx;">
@@ -32,34 +32,36 @@
 			getPhone(e) {
 
 				// console.log(e);
-				
-				if(e.detail.errMsg=='getPhoneNumber:fail user deny') return false;
-				
-				let that=this;
-				
+
+				if (e.detail.errMsg == 'getPhoneNumber:fail user deny') return false;
+
+				let that = this;
+
 				that.httpPost({
-					url:'/weapp/login/getPhone',
-					data:{
-						encryptedData:e.detail.encryptedData,
-						iv:e.detail.iv,
-						sessionKey:that.localGet('weapp_session_key')
-						}
-				}).then((info)=>{
-					
+					url: '/weapp/login/getPhone',
+					data: {
+						encryptedData: e.detail.encryptedData,
+						iv: e.detail.iv,
+						sessionKey: that.localGet('weapp_session_key')
+					}
+				}).then((info) => {
+
 					// console.log(info);
-					
-					that.localSave('token',info.data);
-					
-					
-					uni.navigateBack({});
-					
-					
+
+					if (info.code == 1) {
+
+						that.localSave('token', info.data);
+
+
+						uni.navigateBack({});
+					}
+
 				});
 
 
 			},
-			loginByWeixin(){
-				
+			loginByWeixin() {
+
 			}
 		},
 		onLoad() {

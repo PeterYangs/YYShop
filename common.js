@@ -69,11 +69,17 @@ Vue.prototype.httpCommon = function(param) {
 			
 			if(res.data.code>=10&&res.data.code<=30){
 				
+				Vue.prototype.localRemove('token')
+				
 				uni.navigateTo({
 					url:'/pages/login/login'
 				})
 				
 				return reject(res);
+				
+			}else if(res.data.code>=31&&res.data.code<=40){
+				
+				getApp().$vm.getSession(true);
 				
 			}
 			
@@ -442,6 +448,17 @@ Vue.prototype.showModal = function(title, content) {
 
 	});
 
+}
+
+
+/**
+ * 获取前几页,页面对象,1代表前一页,2代表前两页
+ */
+Vue.prototype.lastPage=function(page=1){
+	
+	
+	return getCurrentPages()[getCurrentPages().length-(page+1)];
+	
 }
 
 
