@@ -107,7 +107,7 @@
 
 
 
-					<view class="row-no-full center-col" style="justify-content: space-between;margin-top: 40upx;">
+					<view @click="to_address_list()" class="row-no-full center-col" style="justify-content: space-between;margin-top: 40upx;">
 
 						<view class="row-no-full center-col">
 							<image src="../../static/icon/address.png" style="width: 40upx;height: 40upx;"></image>
@@ -202,6 +202,13 @@
 				
 				uni.navigateTo({
 					url:"../refund_list/refund_list"
+				})
+				
+			},
+			to_address_list(){
+				
+				uni.navigateTo({
+					url:'../address_list/address_list'
 				})
 				
 			}

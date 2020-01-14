@@ -4,7 +4,7 @@
 		<view style="padding: 20upx 50upx;" class="row-no-full center-col">
 
 			<view class="row-no-full" style="background-color: #FFFFFF;flex: 1;">
-				<input class="search-input" placeholder="请搜索商品" placeholder-class="search-placeholder tip-font-size" />
+				<input  @click="toSearch()" class="search-input" placeholder="请搜索商品" placeholder-class="search-placeholder tip-font-size" />
 
 				<view class="row-no-full center-col" style="padding-right: 20upx;" @click="go()">
 					<image style="width: 40upx;height: 40upx;" src="../../static/icon/search.png"></image>
@@ -145,7 +145,7 @@
 					</view>
 
 					<view style="flex: 1;display: flex;flex-direction: column-reverse;">
-						
+
 						<view style="display: flex;flex-direction: column-reverse;">
 							<view class="normal-font-size text-padding">
 								{{v.name}}
@@ -318,6 +318,12 @@
 					this.newGoodsList = re.data;
 				})
 
+			},
+			toSearch(){
+				
+				uni.navigateTo({
+					url:'../search/search'
+				})
 			}
 
 		}

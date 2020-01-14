@@ -166,8 +166,11 @@
 		},
 		onLoad() {
 
-			this.getList();
+			
 
+		},
+		onShow() {
+			this.getList();
 		}
 	}
 </script>

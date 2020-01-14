@@ -253,6 +253,11 @@
 										
 					uni.navigateBack({delta:2});
 					
+				}else{
+					
+					uni.navigateBack({})
+					
+					
 				}
 				
 				

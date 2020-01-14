@@ -92,6 +92,14 @@
 				"navigationBarTextStyle":"black"
 			}
         }
+        ,{
+            "path" : "pages/search/search",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/search_list/search_list",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
