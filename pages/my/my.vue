@@ -62,11 +62,12 @@
 
 				<view style="margin-top: 50upx;" class="tip-font-size list-item">
 
-					<view class="row-no-full center-col" style="justify-content: space-between;">
+					<view @click="goCollect()" class="row-no-full center-col" style="justify-content: space-between;">
 
-						<view class="row-no-full center-col">
+						<view class="row-no-full center-col" >
+							
 							<image src="../../static/icon/attention.png" style="width: 40upx;height: 40upx;"></image>
-							<text>关注商品</text>
+							<text>收藏商品</text>
 						</view>
 
 						<view>
@@ -211,6 +212,11 @@
 					url:'../address_list/address_list'
 				})
 				
+			},
+			goCollect(){
+				uni.navigateTo({
+					url:"../goods_collect/goods_collect"
+				})
 			}
 
 		},

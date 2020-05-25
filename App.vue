@@ -246,7 +246,7 @@
 	.red-background-color {
 		background-color: #c24a28;
 	}
-
+	
 	.black-background-color {
 
 		background-color: #4c332b;

@@ -109,7 +109,7 @@
 		},
 		methods: {
 
-			specificationBtn: function(item, n, event, index) {
+			specificationBtn: function(item, n, event,index) {
 				var self = this;
 				if (self.selectArr[n] != item) {
 					self.selectArr[n] = item;
@@ -229,6 +229,7 @@
 					return {};
 				}
 			}
+			
 
 
 		},

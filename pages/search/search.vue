@@ -5,7 +5,7 @@
 		<view class="red-background-color" style="padding-bottom: 15upx;padding-top: 10upx;">
 		
 			<view style="margin-left: 30upx;" class="row-no-full center-col">
-				<input v-model="item.keyword" @input="getInput" @confirm="getSearch"  style="background-color: #FFFFFF;border-radius: 2rem;height: 50upx;flex: 1;padding-left: 20upx;" />
+				<input v-model="item.keyword" @input="getInput" @confirm="getSearch"  style="background-color: #FFFFFF;border-radius: 2rem;height: 50upx;flex: 1;padding-left: 20upx;" :focus="inputF"/>
 		
 				<text style="color: #FFFFFF;padding-left: 20upx;padding-right: 20upx;">取消</text>
 			</view>
@@ -57,7 +57,8 @@
 				},
 				search_list: [],
 				history_list:[],
-				key:'search_keyword'
+				key:'search_keyword',
+				inputF:false
 			}
 		},
 		methods: {
@@ -125,7 +126,7 @@
 				
 				list=JSON.parse(list);
 				
-				console.log(list);
+				// console.log(list);
 				
 				// if(list.indexOf(value)==-1){
 					
@@ -134,7 +135,7 @@
 				
 				if(list.length>=limit){
 					
-					console.log(111);
+					// console.log(111);
 					
 					
 					let index=list.indexOf(value);
@@ -187,7 +188,7 @@
 					
 					if(index!==-1){
 						
-						console.log(2222);
+						// console.log(2222);
 						
 						list.splice(index,1)
 						
@@ -230,15 +231,19 @@
 			},
 			select_history(v){
 				
-				console.log(v);
+				// console.log(v);
 				
 				this.item.keyword=v;
 				
 				
-				let word=encodeURI(v);
+				// let word=encodeURI(v);
+				
+				
+				let param= this.setSearchParam(1,v,v)
+				
 				
 				uni.navigateTo({
-					url:'../search_list/search_list?keyword=' + word+ "&type=1"
+					url:'../search_list/search_list?'+param
 				})
 				
 				
@@ -248,10 +253,14 @@
 				this.item.keyword=v;
 				
 				
-				let word=encodeURI(v);
+				// let word=encodeURI(v);
+				
+				// let inputText=encodeURI(v);
+				
+				let param= this.setSearchParam(1,v,v)
 				
 				uni.navigateTo({
-					url:'../search_list/search_list?keyword=' + word+ "&type=1"
+					url:'../search_list/search_list?'+param
 				})
 				
 			},
@@ -259,12 +268,15 @@
 				
 				// console.log('kkkkkkkkk');
 				
-				let word=encodeURI(this.item.keyword);
+				// let word=encodeURI(this.item.keyword);
 				
-				console.log(word);
+				// console.log(word);
+				
+				
+				let param= this.setSearchParam(1,this.item.keyword,this.item.keyword)
 				
 				uni.navigateTo({
-					url:'../search_list/search_list?keyword=' + word+ "&type=1"
+					url:'../search_list/search_list?'+param
 				})
 				
 			}
@@ -285,6 +297,25 @@
 		},
 		components:{
 			// searchInput
+		},
+		onShow() {
+			
+			// this.inputF=false;
+			
+			if(this.inputF==true){
+				
+				this.inputF=false;
+				
+				this.inputF=true;
+				
+				return;
+				
+			}
+			 
+			 
+			 this.inputF=true;
+			
+			
 		}
 	}
 </script>

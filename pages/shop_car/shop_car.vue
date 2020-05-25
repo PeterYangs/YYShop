@@ -2,7 +2,7 @@
 	<view class="tip-font-size col" style="min-height: 100vh;background-color: #F2F2F2;padding: 20upx 20upx;">
 
 
-		<view v-if='list.length>=1' v-for="(vv,ii) in list" :key="ii" style="background-color: #FFFFFF;border-radius: .3rem;padding: 30upx 40upx;margin-bottom: 30upx;">
+		<view v-if='isLogin&&list.length>=1' v-for="(vv,ii) in list" :key="ii" style="background-color: #FFFFFF;border-radius: .3rem;padding: 30upx 40upx;margin-bottom: 30upx;">
 
 			<view class="row-no-full center-col" style="margin-bottom: 30upx;">
 				<image src="../../static/icon/shop.png" style="width: 30upx;height: 30upx;"></image>
@@ -72,15 +72,23 @@
 
 
 
-		<view v-if="list.length<=0" style="height:90vh;" class="col center-row center-col">
+		<view v-if="isLogin&&list.length<=0" style="height:90vh;" class="col center-row center-col">
 
 			<image src="../../static/menu/shop_car_normal.png" style="width: 200upx;height: 200upx;"></image>
 			<text>购物车里空空如也~</text>
 
 		</view>
+		
+		<view style="height: 100vh;" class="col center-col center-row">
+			
+			<button type="primary" style="height: auto;width: 35%;" @click="goLogin()">登录</button>
+			
+		</view>
+		
+		
 
 
-		<view style="position: fixed;bottom: 0;background-color: #FFFFFF;left: 0;right: 0;">
+		<view v-if="isLogin"  style="position: fixed;bottom: 0;background-color: #FFFFFF;left: 0;right: 0;">
 
 			<view class="row-no-full">
 
@@ -147,7 +155,8 @@
 					}
 				}],
 				checkedId: '',
-				checkButtonStatus:2
+				checkButtonStatus:2,
+				isLogin:false
 			}
 		},
 		methods: {
@@ -162,8 +171,19 @@
 
 
 					// console.log(re);
-
-					this.list = re.data;
+					if(re.code==1){
+						
+						this.list = re.data;
+						
+						this.isLogin=true;
+						
+					}else{
+						
+						this.isLogin=false;
+						
+					}
+					
+					
 
 					uni.hideLoading();
 
@@ -316,7 +336,15 @@
 				})
 				
 				
-			}
+			},
+			goLogin(){
+				
+				
+				uni.navigateTo({
+					url:'../login/login'
+				})
+				
+			},
 
 		},
 		components: {

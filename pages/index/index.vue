@@ -1,10 +1,11 @@
 <template>
 	<view class="background-color" style="min-height: 100vh;">
 
+		<!-- 搜索框栏 -->
 		<view style="padding: 20upx 50upx;" class="row-no-full center-col">
 
 			<view class="row-no-full" style="background-color: #FFFFFF;flex: 1;">
-				<input  @click="toSearch()" class="search-input" placeholder="请搜索商品" placeholder-class="search-placeholder tip-font-size" />
+				<input @click="toSearch()" class="search-input" placeholder="请搜索商品" placeholder-class="search-placeholder tip-font-size" />
 
 				<view class="row-no-full center-col" style="padding-right: 20upx;" @click="go()">
 					<image style="width: 40upx;height: 40upx;" src="../../static/icon/search.png"></image>
@@ -17,6 +18,7 @@
 
 		</view>
 
+		<!-- banner广告栏 -->
 		<view>
 
 
@@ -39,12 +41,16 @@
 					<image src="../../static/icon/notice.png" style="width: 40upx;height: 40upx;"></image>
 				</view>
 
-				<text class="tip-font-size" style="flex: 1;overflow: hidden;white-space: nowrap;">
+				<text v-if='messageList.length>0' class="tip-font-size" style="flex: 1;overflow: hidden;white-space: nowrap;">
 					{{messageList[messageIndex].title}}
 				</text>
 
-				<view class="row-no-full center-col">
+				<view v-if='messageList.length>0' class="row-no-full center-col">
 					<image src="../../static/icon/right.png" style="width: 40upx;height: 40upx;"></image>
+				</view>
+
+				<view v-if="messageList<=0">
+					暂无公告
 				</view>
 
 
@@ -88,11 +94,11 @@
 
 				<view style="margin-top: 30upx;padding-bottom: 30upx;">
 
-					<scroll-view :scroll-x="true">
-						<view class="row-no-full">
-							<view class="col" v-for="(v,i) in recommendGoodsList" :key='i' style="padding: 0 30upx;max-width: 250upx;">
+					<view >
+						<view class="row-no-full" style="justify-content: space-around;">
+							<view class="col" v-for="(v,i) in recommendGoodsList" :key='i' @click="toGoodsDetail(v.id)" style="width: 20vw;">
 
-								<view @click="toGoodsDetail(v.id)">
+								<view>
 									<image style="width: 200upx;height: 200upx;" :src="getImgPrefix()+v.main_img"></image>
 								</view>
 
@@ -108,15 +114,15 @@
 											<view style="text-decoration: line-through;" class="small-font-size gray-color">¥ {{v.min_price}}</view>
 										</view>
 
-										<view>
+										<!-- <view>
 											<image src="../../static/menu/shop_car_selected.png" style="width: 40upx;height: 40upx;"></image>
-										</view>
+										</view> -->
 
 									</view>
 								</view>
 							</view>
 						</view>
-					</scroll-view>
+					</view>
 
 
 				</view>
@@ -127,7 +133,7 @@
 		</view>
 
 
-		<view>
+		<view class="col">
 			<view class="normal-font-size row-no-full center-col" style="padding: 10upx 0;">
 				<view style="height: 1px;flex: 1;" class="black-background-color"></view>
 				<view style="margin: 0 45upx;">新品上架</view>
@@ -135,16 +141,16 @@
 
 			</view>
 
-			<view style="width: 100vw;flex-wrap: wrap;justify-content: space-between;" class="row-no-full">
+			<view style="flex-wrap: wrap;justify-content:space-between;padding: 0 30upx;" class="row-no-full">
+				
+				
+				<view class="col goods-item2"  v-for="(v,i) in newGoodsList" :key='i' @click="toGoodsDetail(v.id)">
 
-				<view class="col" style="align-content: stretch;width: 48%;margin-top: 30upx;background-color: #FFFFFF;padding-bottom: 20upx;"
-				 v-for="(v,i) in newGoodsList" :key='i' @click="toGoodsDetail(v.id)">
-
-					<view>
-						<image :src="getImgPrefix()+v.main_img" style="width: 100%;" mode="widthFix"></image>
+					<view style="overflow: hidden;">
+						<image :src="getImgPrefix()+v.main_img" class="img-border-radius"></image>
 					</view>
 
-					<view style="flex: 1;display: flex;flex-direction: column-reverse;">
+					<view style="flex: 1;display: flex;flex-direction: column-reverse;padding: 10upx 20upx;">
 
 						<view style="display: flex;flex-direction: column-reverse;">
 							<view class="normal-font-size text-padding">
@@ -161,9 +167,9 @@
 									<view style="text-decoration: line-through;" class="small-font-size gray-color">¥ {{v.min_price}}</view>
 								</view>
 
-								<view>
+								<!-- <view>
 									<image src="../../static/menu/shop_car_selected.png" style="width: 40upx;height: 40upx;"></image>
-								</view>
+								</view> -->
 
 							</view>
 
@@ -171,7 +177,10 @@
 					</view>
 				</view>
 
-
+				<view v-if="newGoodsList.length % 2!==0" class="goods-item2" style="opacity: 0;">
+					
+				</view>
+				
 			</view>
 
 		</view>
@@ -319,10 +328,10 @@
 				})
 
 			},
-			toSearch(){
-				
+			toSearch() {
+
 				uni.navigateTo({
-					url:'../search/search'
+					url: '../search/search'
 				})
 			}
 
@@ -365,4 +374,20 @@
 
 		padding: 0 10upx;
 	}
+
+	.goods-item2 {
+		/* width: 46%; */
+		margin-top: 30upx;
+		background-color: #FFFFFF;
+		padding-bottom: 20upx;
+		border-radius: 20upx;
+	}
+	
+	.img-border-radius{
+		border-radius: 20upx;
+		
+		width: 320upx;
+		height: 320upx;
+	}
+	
 </style>

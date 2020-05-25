@@ -23,10 +23,20 @@
 					<view class="gray-color small-font-size">100人已买</view>
 				</view>
 
-				<view>
-					<view>
-						<image src="../../static/icon/share.png" style="width: 40upx;height: 40upx;"></image>
+				<view class="row-no-full">
+					
+					<!-- 收藏 -->
+					<view @click="college()">
+						<image v-if="!item.collect.id" src="../../static/icon/college.png" style="width: 45upx;height: 45upx;"></image>
+						<image v-else src="../../static/icon/colleged.png" style="width: 45upx;height: 45upx;"></image>
 					</view>
+					
+					
+					
+					
+					<!-- <view>
+						<image src="../../static/icon/share.png" style="width: 40upx;height: 40upx;"></image>
+					</view> -->
 				</view>
 
 			</view>
@@ -98,7 +108,7 @@
 		</view>
 
 
-		<view class="bot">
+		<view class="bot" style="box-shadow: 10px 10px 5px #888888;">
 
 			<view class="row-no-full center-col" style="padding: 15upx 30upx;">
 
@@ -191,7 +201,7 @@
 
 							<view>
 
-								<goods-group :item="item" @success='setSku'>
+								<goods-group :item="item" @success='setSku' ref='goods_group'>
 								</goods-group>
 
 							</view>
@@ -259,7 +269,8 @@
 					seller_id: -1,
 					sku: {},
 					status: 1,
-					price_interval:''
+					price_interval:'',
+					collect:''
 
 				},
 				option: {},
@@ -379,6 +390,25 @@
 			submit() {
 				
 				
+				// console.log(this.$refs.goods_group.selectArr);
+				
+				let selectArr=this.$refs.goods_group.selectArr;
+				
+				for(let i in selectArr){
+					
+					
+					// console.log(selectArr[i]);
+					let temp=selectArr[i];
+					
+					if(temp==="") return uni.showToast({
+					title:'请选择完整的规格',
+					icon:'none'
+				}) 
+					
+				}
+				
+				// return ;
+				
 				if(!this.sku_index.id) return uni.showToast({
 					title:'请选择完整的规格',
 					icon:'none'
@@ -412,9 +442,18 @@
 					
 					// console.log(param);
 					
-					uni.navigateTo({
-						url:'../confirm/confirm?'+param
-					})
+					this.httpPost({
+						url:"/weapp/check/checkLogin"
+					}).then((login)=>{
+						
+						uni.navigateTo({
+							url:'../confirm/confirm?'+param
+						})
+						
+					});
+					
+					
+					
 					
 				}
 
@@ -441,6 +480,17 @@
 					
 					this.shop_car_num=re.data;
 					
+				})
+				
+			},
+			college(){
+				
+				this.httpPost({
+					url:"/weapp/goods/collect_goods",
+					data:{id:this.item.id}
+				}).then(()=>{
+					
+					this.get_detail();
 				})
 				
 			}

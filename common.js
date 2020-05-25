@@ -453,6 +453,9 @@ Vue.prototype.showModal = function(title, content) {
 
 /**
  * 获取前几页,页面对象,1代表前一页,2代表前两页
+ * 
+ * 例: this.lastPage.route=='pages/confirm/confirm'
+ * 
  */
 Vue.prototype.lastPage=function(page=1){
 	
@@ -460,6 +463,35 @@ Vue.prototype.lastPage=function(page=1){
 	return getCurrentPages()[getCurrentPages().length-(page+1)];
 	
 }
+
+
+Vue.prototype.setSearchParam=function(type,keyword,inputText){
+	
+	
+	let str='keyword=' + encodeURI(keyword)+ "&type="+encodeURI(type)+"&inputText="+ encodeURI(inputText)
+	 
+	 return str;
+	
+}
+
+Vue.prototype.getSearchParam=function(option){
+	
+	let obj={};
+	for(let i in option){
+		
+		let item=option[i];
+		
+		item=decodeURI(item)
+		
+		obj[i]=item;
+		
+	}
+	
+	
+	return obj;
+	
+}
+
 
 
 //-----------------------------------------------------------------------------------------------
