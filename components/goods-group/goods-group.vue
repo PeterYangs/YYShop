@@ -111,6 +111,8 @@
 
 			specificationBtn: function(item, n, event,index) {
 				var self = this;
+				
+				console.log(item);
 				if (self.selectArr[n] != item) {
 					self.selectArr[n] = item;
 					self.subIndex[n] = index;

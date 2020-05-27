@@ -14,7 +14,7 @@
 
 		<view class="goods-item">
 
-			<view class="tip-font-size">商品名称</view>
+			<view class="tip-font-size">{{item.name}}</view>
 
 			<view class="row-no-full" style="margin-top: 30upx;justify-content: space-between;">
 
@@ -27,7 +27,7 @@
 					
 					<!-- 收藏 -->
 					<view @click="college()">
-						<image v-if="!item.collect.id" src="../../static/icon/college.png" style="width: 45upx;height: 45upx;"></image>
+						<image v-if="!getObj(item,'collect.id')" src="../../static/icon/college.png" style="width: 45upx;height: 45upx;"></image>
 						<image v-else src="../../static/icon/colleged.png" style="width: 45upx;height: 45upx;"></image>
 					</view>
 					
@@ -270,7 +270,8 @@
 					sku: {},
 					status: 1,
 					price_interval:'',
-					collect:''
+					collect:'',
+					sku_details:[]
 
 				},
 				option: {},
@@ -331,12 +332,13 @@
 			},
 			get_detail() {
 
-				console.log(this.option);
+				// console.log(this.option);
 
 				this.httpPost({
 					url: "/weapp/goods/detail",
 					data: {
-						id: this.option.id
+						id: this.option.id,
+						sku_id:this.option.sku_id
 					}
 				}).then((re) => {
 
@@ -345,6 +347,9 @@
 					// this.item=re.data;
 
 					this.setItem(this.item, re.data)
+					
+					
+					this.checkSku();
 
 				})
 
@@ -493,6 +498,44 @@
 					this.get_detail();
 				})
 				
+			},
+			checkSku(){
+				
+				// if(this)
+				
+				if(this.item.sku_details.length<=0) return;
+				
+				let temp=this.item.sku_details;
+				
+				let specifications=this.item.sku.specifications;
+				
+				for(let i  in temp){
+					
+					let value=temp[i].value;
+					
+					
+					for(let j in specifications[i].item){
+						
+						if(specifications[i].item[j].name==value) this.$refs.goods_group.specificationBtn(value,i,'',j);
+						
+					}
+					
+					
+				}
+				
+				
+			},
+			addView(){
+				
+				this.httpPost({
+					url:"/weapp/goods/addView",
+					data:{id:this.option.id}
+				}).then((re)=>{
+					
+					
+					
+				})
+				
 			}
 		},
 		components: {
@@ -515,6 +558,11 @@
 			
 			
 			this.getShopCarNum();
+			
+			this.addView();
+			
+			// this.$refs.goods_group.specificationBtn('1983',0,'',0)
+			
 		}
 	}
 </script>

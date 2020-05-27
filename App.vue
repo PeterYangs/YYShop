@@ -9,6 +9,8 @@
 			if (!this.localGet('weapp_session_key')) this.getSession();
 			// this.getSession();
 
+			// console.log(this.localGet('weapp_session_key'));
+
 			// #endif
 
 

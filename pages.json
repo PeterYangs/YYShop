@@ -3,7 +3,8 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "YYShop"
+				"navigationBarTitleText": "YYShop",
+				"enablePullDownRefresh":true
 			}
 		},
 		{
@@ -15,7 +16,10 @@
 		
 	    ,{
             "path" : "pages/shop_car/shop_car",
-            "style" : {}
+            "style" : {
+				"enablePullDownRefresh":true
+				
+			}
         }
         ,{
             "path" : "pages/my/my",
@@ -102,6 +106,10 @@
         }
         ,{
             "path" : "pages/goods_collect/goods_collect",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/history/history",
             "style" : {}
         }
     ],

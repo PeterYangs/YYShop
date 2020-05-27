@@ -172,8 +172,12 @@ Vue.prototype.localSave = function(key, value, expire = 0, prefix = 'weapp_') {
 
 
 Vue.prototype.localGet = function(key, defaultValue = '', prefix = 'weapp_') {
-
+	
+	// console.log(prefix + key);
+	
 	let v = uni.getStorageSync(prefix + key)
+	
+	// console.log(v);
 
 	if (v === '') return defaultValue
 

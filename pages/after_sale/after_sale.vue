@@ -43,7 +43,8 @@
 							<view class="col text-dec" style="margin-left: 40upx;">
 
 								<text>{{v.goods_name}}</text>
-								<text class="small-font-size" style="color: #666;">数量：{{v.num}}</text>
+								<text class="small-font-size" style="color: #666;">{{v.sku_msg}}</text>
+								<text class="small-font-size" style="color: #666;margin-top: 10upx;">数量：{{v.num}}</text>
 								<text class="bold" style="margin-top: 15upx;">¥{{v.price}}</text>
 
 							</view>
@@ -55,7 +56,7 @@
 
 					<view style="display: flex;flex-direction: row-reverse;margin-top: 5upx;" class="button-item small-font-size">
 
-						<text @click="to_refund(v)">申请退款</text>
+						<text v-if="v.is_refund==false" @click="to_refund(v)">申请退款</text>
 
 						<text @click="add_shop_car(v)">加购物车</text>
 

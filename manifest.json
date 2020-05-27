@@ -56,7 +56,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wxe3aa6306237e5490",
+        "appid" : "wx504eb810f53ac04e",
         "setting" : {
             "urlCheck" : false
         },
@@ -70,5 +70,13 @@
     },
     "mp-toutiao" : {
         "usingComponents" : true
-    }
+    },
+	"h5":{
+		"devServer":{
+			"disableHostCheck" : true
+			
+		}
+		
+	}
+	
 }

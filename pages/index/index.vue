@@ -280,7 +280,8 @@
 
 			},
 			getInit() {
-
+				
+			
 				this.getAd();
 
 				// this.switchMessage();
@@ -288,8 +289,19 @@
 				this.getMessage();
 
 				this.getRecommend();
-
-				this.getNewGoods();
+				
+				return new Promise((success,fail)=>{
+					
+					this.getNewGoods().then((re)=>{
+						
+						success(re);
+					});
+					
+				});
+				
+				
+				
+				
 			},
 			/**
 			 * 获取推荐商品
@@ -317,15 +329,26 @@
 			 * 获取新品
 			 */
 			getNewGoods() {
-
-				this.httpPost({
-					url: "/weapp/goods/getNewGoods"
-				}).then((re) => {
-
-					// console.log(re);
-
-					this.newGoodsList = re.data;
-				})
+				
+				return new Promise((success,fail)=>{
+					
+					this.httpPost({
+						url: "/weapp/goods/getNewGoods"
+					}).then((re) => {
+					
+						// console.log(re);
+						
+					
+						this.newGoodsList = re.data;
+						
+						success(re);
+						
+					})
+					
+					
+				});
+				
+				
 
 			},
 			toSearch() {
@@ -333,9 +356,23 @@
 				uni.navigateTo({
 					url: '../search/search'
 				})
+			},
+			onPullDownRefresh(){
+				
+				
+				this.getInit().then(()=>{
+					
+					uni.stopPullDownRefresh();
+					
+				})
+				
 			}
+			
 
 		}
+		
+		
+	
 	}
 </script>
 

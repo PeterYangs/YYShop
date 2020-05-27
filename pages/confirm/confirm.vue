@@ -264,6 +264,8 @@
 			},
 			submit(){
 				
+				if(this.item.delivery_type==1&&!this.item.address_id) return this.showModal('提示', '请填写地址');
+				
 				this.httpPost({
 					url:'/weapp/order/create_order',
 					data:this.item

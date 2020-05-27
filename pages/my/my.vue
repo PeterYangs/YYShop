@@ -78,7 +78,7 @@
 
 					<text class="line"></text>
 
-					<view class="row-no-full center-col" style="justify-content: space-between;">
+					<view @click="to_history()" class="row-no-full center-col" style="justify-content: space-between;">
 
 						<view class="row-no-full center-col">
 							<image src="../../static/icon/history.png" style="width: 40upx;height: 40upx;"></image>
@@ -217,7 +217,13 @@
 				uni.navigateTo({
 					url:"../goods_collect/goods_collect"
 				})
-			}
+			},
+			to_history(){
+				uni.navigateTo({
+					url:"../history/history"
+				})
+			},
+			
 
 		},
 		onShow() {

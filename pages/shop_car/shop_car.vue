@@ -79,7 +79,7 @@
 
 		</view>
 		
-		<view style="height: 100vh;" class="col center-col center-row">
+		<view v-if='!isLogin' style="height: 100vh;" class="col center-col center-row">
 			
 			<button type="primary" style="height: auto;width: 35%;" @click="goLogin()">登录</button>
 			
@@ -88,7 +88,7 @@
 		
 
 
-		<view v-if="isLogin"  style="position: fixed;bottom: 0;background-color: #FFFFFF;left: 0;right: 0;">
+		<view v-if="isLogin&&list.length>0"  style="position: fixed;bottom: 0;background-color: #FFFFFF;left: 0;right: 0;">
 
 			<view class="row-no-full">
 
@@ -124,7 +124,7 @@
 				
 				
 				
-				<view @click="submit()" style="flex: 1;color: #FFFFFF;" class="red-background-color row-no-full center-col center-row">去结算</view>
+				<view  @click="submit()" style="flex: 1;color: #FFFFFF;" class="red-background-color row-no-full center-col center-row">去结算</view>
 				
 			
 				
@@ -163,32 +163,37 @@
 
 			getShopCarList() {
 
-
-				uni.showLoading({})
-				this.httpPost({
-					url: "/weapp/shop_car/getShopCarList"
-				}).then((re) => {
-
-
-					// console.log(re);
-					if(re.code==1){
-						
-						this.list = re.data;
-						
-						this.isLogin=true;
-						
-					}else{
-						
-						this.isLogin=false;
-						
-					}
+				return new Promise((success,fail)=>{
+					
+					uni.showLoading({})
+					this.httpPost({
+						url: "/weapp/shop_car/getShopCarList"
+					}).then((re) => {
 					
 					
-
-					uni.hideLoading();
-
-				})
-
+						// console.log(re);
+						if(re.code==1){
+							
+							this.list = re.data;
+							
+							this.isLogin=true;
+							
+						}else{
+							
+							this.isLogin=false;
+							
+						}
+						
+						success();
+						
+					
+						uni.hideLoading();
+					
+					})
+					
+					
+				});
+				
 
 			},
 			changeStatus(status, id) {
@@ -345,6 +350,14 @@
 				})
 				
 			},
+			onPullDownRefresh(){
+				
+				this.getShopCarList().then(()=>{
+					
+					uni.stopPullDownRefresh();
+				})
+				
+			}
 
 		},
 		components: {
