@@ -42,7 +42,16 @@
 
 								<view class="row-no-full center-col space">
 
-									<view class="normal-font-size red-color">¥ {{getObj(v,'goods_sku.price')}}</view>
+									<view class="normal-font-size red-color row-no-full">¥										
+										<view v-if="getObj(v,'goods_sku.snapped_price')">
+											{{getObj(v,'goods_sku.snapped_price')}}
+										</view>
+										
+										<view v-else>
+											{{getObj(v,'goods_sku.price')}}
+										</view>
+									
+									</view>
 
 									<view>
 										<uni-number-box   :value="v.num" @change='changeNum($event,v)'></uni-number-box>
@@ -391,7 +400,7 @@
 							
 							if(!item) continue;
 							
-							total+= Number(item.price)*Number(this.list[i][j].num);
+							total+= Number(item.real_price)*Number(this.list[i][j].num);
 							
 							
 						}

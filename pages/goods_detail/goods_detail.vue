@@ -14,32 +14,78 @@
 
 		<view class="goods-item">
 
-			<view class="tip-font-size">{{item.name}}</view>
+			<view class="row-no-full" style="justify-content: space-between;">
 
-			<view class="row-no-full" style="margin-top: 30upx;justify-content: space-between;">
-
-				<view class="row-no-full center-col">
-					<view class="red-color title-font-size" style="margin-right: 28upx;">¥{{item.price_interval}}</view>
-					<view class="gray-color small-font-size">100人已买</view>
+				<!-- 普通价格 -->
+				<view v-if="!getObj(sku_index,'snapped_price',false)" class="row-no-full center-col" style="padding: 20upx 30upx;">
+					<view class="red-color title-font-size" style="margin-right: 28upx;">
+						¥
+						<template v-if="getObj(sku_index,'price')">{{getObj(sku_index,'price')}}</template>
+						<template v-else>{{item.min_price}}</template>
+					</view>
+					<!-- <view class="gray-color small-font-size">100人已买</view> -->
 				</view>
 
-				<view class="row-no-full">
-					
-					<!-- 收藏 -->
-					<view @click="college()">
-						<image v-if="!getObj(item,'collect.id')" src="../../static/icon/college.png" style="width: 45upx;height: 45upx;"></image>
-						<image v-else src="../../static/icon/colleged.png" style="width: 45upx;height: 45upx;"></image>
+				<!-- 秒杀价格 -->
+				<view v-if="getObj(sku_index,'snapped_price')" class="row-no-full" style="flex: 1;">
+
+					<view class="row-no-full center-col goods-item-padding" style="flex: 6;background-color: #009EE2;">
+
+						<view class=" small-font-size red-background-color" style="color: #FFFFFF;border-radius: .3rem;height: fit-content;margin-right: 20upx;width: 60upx;height: 60upx;text-align: center;padding: 10upx;">限时<br />秒杀</view>
+
+						<view>
+
+							<view class="title-font-size row-no-full" style="line-height: 26px;color: #FFFFFF;">¥
+
+								<view class="row-no-full" style="align-items: flex-end;">
+									<!-- <template v-if="getObj(sku_index,'snapped_price')"> -->
+									<view class="row-no-full" style="align-items: flex-end;">{{getObj(sku_index,'snapped_price') | split(0)}}</view>
+									.
+									<view class="small-font-size row-no-full" style="align-items: flex-end;line-height: 36upx;">{{getObj(sku_index,'snapped_price') | split(1)}}</view>
+									<!-- </template> -->
+
+
+
+
+								</view>
+
+							</view>
+
+							<view class="small-font-size" style="text-decoration: line-through;color: #FFFFFF;">¥
+								{{getObj(sku_index,'price')}}</view>
+
+						</view>
+
+
 					</view>
-					
-					
-					
-					
-					<!-- <view>
-						<image src="../../static/icon/share.png" style="width: 40upx;height: 40upx;"></image>
-					</view> -->
+
+					<view class="row-no-full small-font-size center-row" style="background-color: #feeae9;padding: 0 20upx;">
+
+						<view class="col center-row center-col">
+
+							<view class="red-color" style="margin-bottom: 10upx;">距离结束还剩:</view>
+							<view class="row-no-full small-font-size time-item" style="line-height: 32upx;">
+								<view class="red-background-color" style="">{{end_time[0]}}:</view>
+								<view class="red-background-color">{{end_time[1]}}:</view>
+								<view class="red-background-color">{{end_time[2]}}</view>
+							</view>
+						</view>
+
+					</view>
+
+				</view>
+
+
+
+				<view class="row-no-full">
+
+
 				</view>
 
 			</view>
+
+			<!-- 商品名称 -->
+			<view class="tip-font-size" style="margin-top: 30upx;padding: 10upx 30upx;">{{item.name}}</view>
 
 
 		</view>
@@ -112,14 +158,13 @@
 
 			<view class="row-no-full center-col" style="padding: 15upx 30upx;">
 
-				<view class="row-no-full center-col" style="flex: 1;justify-content: space-between;">
-					<view class="col center-col">
+				<view class="row-no-full center-col" style="flex: 2;justify-content: space-between;">
+					<view class="col center-row center-col">
 						<image src="../../static/icon/customer.png" style="height: 40upx;width: 40upx;"></image>
-						<text class="small-font-size gray-color">客服</text>
+						<text class="small-font-size gray-color" style="margin-top: 10upx;">客服</text>
 					</view>
 
-					<view class="col center-col" @click="toShopCar()">
-						<!-- <uni-badge text="1" :inverted="true" size="small"> -->
+					<view class="col center-row center-col" @click="toShopCar()">
 
 						<view class="relative">
 							<image src="../../static/menu/shop_car_normal.png" style="height: 40upx;width: 40upx;">
@@ -131,6 +176,19 @@
 						<!-- </uni-badge> -->
 						<text class="small-font-size gray-color">购物车</text>
 					</view>
+
+
+					<!-- 收藏 -->
+					<view class="col center-row center-col">
+						<view @click="college()">
+							<image v-if="!getObj(item,'collect.id')" src="../../static/icon/college.png" style="width: 40upx;height: 40upx;"></image>
+							<image v-else src="../../static/icon/colleged.png" style="width: 40upx;height: 40upx;"></image>
+						</view>
+
+						<view class="small-font-size gray-color">收藏</view>
+
+					</view>
+
 				</view>
 
 				<view class="row-no-full center-col" style="flex: 3;padding-left: 40upx;">
@@ -151,7 +209,7 @@
 		</view>
 
 
-
+		<!-- 规格选择框 -->
 		<uni-popup ref='goods_sku' type="bottom">
 
 			<view style="background-color: #FFFFFF;">
@@ -182,7 +240,32 @@
 
 							<view class="col">
 
-								<view class="red-color"><text v-if="getObj(sku_index,'price')">¥{{getObj(sku_index,'price')}}</text></view>
+								<view class="red-color tip-font-size">
+									<view v-if="getObj(sku_index,'price')">
+
+										<view v-if="getObj(sku_index,'snapped_price')">
+
+											<view>
+												¥ {{getObj(sku_index,'snapped_price')}}
+											</view>
+
+											<view style="color: #000000;text-decoration: line-through;" class="small-font-size">
+												¥{{getObj(sku_index,'price')}}
+											</view>
+
+
+
+
+
+										</view>
+
+										<view v-else>
+											¥{{getObj(sku_index,'price')}}
+										</view>
+
+									</view>
+
+								</view>
 
 								<view class="small-font-size">
 									<text v-if="getObj(sku_index,'number')">编号:{{getObj(sku_index,'number')}}</text>
@@ -269,9 +352,10 @@
 					seller_id: -1,
 					sku: {},
 					status: 1,
-					price_interval:'',
-					collect:'',
-					sku_details:[]
+					price_interval: '',
+					collect: '',
+					sku_details: [],
+					min_price: ""
 
 				},
 				option: {},
@@ -288,7 +372,7 @@
 
 				},
 				//购物车商品数量
-				shop_car_num:0
+				shop_car_num: 0
 			}
 		},
 		methods: {
@@ -319,27 +403,33 @@
 				this.$refs['goods_sku'].open();
 
 			},
-			showBuyNow(){
-				
+			showBuyNow() {
+
 				this.submitType = 'buy_now';
-				
+
 				this.$refs['goods_sku'].open();
-				
+
 			},
-			
+
 			closeSku() {
 				this.$refs['goods_sku'].close();
 			},
-			get_detail() {
+			get_detail(isSku = true) {
 
 				// console.log(this.option);
 
+				let data = {
+					id: this.option.id,
+
+				};
+
+
+				if (isSku == true) data.sku_id = this.option.sku_id;
+
+
 				this.httpPost({
 					url: "/weapp/goods/detail",
-					data: {
-						id: this.option.id,
-						sku_id:this.option.sku_id
-					}
+					data: data
 				}).then((re) => {
 
 					// console.log(re);
@@ -347,8 +437,8 @@
 					// this.item=re.data;
 
 					this.setItem(this.item, re.data)
-					
-					
+
+
 					this.checkSku();
 
 				})
@@ -393,35 +483,35 @@
 
 			},
 			submit() {
-				
-				
+
+
 				// console.log(this.$refs.goods_group.selectArr);
-				
-				let selectArr=this.$refs.goods_group.selectArr;
-				
-				for(let i in selectArr){
-					
-					
+
+				let selectArr = this.$refs.goods_group.selectArr;
+
+				for (let i in selectArr) {
+
+
 					// console.log(selectArr[i]);
-					let temp=selectArr[i];
-					
-					if(temp==="") return uni.showToast({
-					title:'请选择完整的规格',
-					icon:'none'
-				}) 
-					
+					let temp = selectArr[i];
+
+					if (temp === "") return uni.showToast({
+						title: '请选择完整的规格',
+						icon: 'none'
+					})
+
 				}
-				
+
 				// return ;
-				
-				if(!this.sku_index.id) return uni.showToast({
-					title:'请选择完整的规格',
-					icon:'none'
+
+				if (!this.sku_index.id) return uni.showToast({
+					title: '请选择完整的规格',
+					icon: 'none'
 				})
-				
-				
+
+
 				// console.log(this.sku_index.id);
-				
+
 				// return false;
 
 				if (this.submitType == 'shop_car') {
@@ -429,9 +519,9 @@
 					this.addShopCar().then((re) => {
 
 						this.$refs['goods_sku'].close();
-						
+
 						this.getShopCarNum();
-						
+
 						uni.showToast({
 							icon: 'success',
 							title: '加入购物车成功'
@@ -440,26 +530,26 @@
 
 
 
-				}else if(this.submitType == 'buy_now'){
-					
-					let param='param='+this.sku_index.id+'*'+this.submitItem.num;
-					
-					
+				} else if (this.submitType == 'buy_now') {
+
+					let param = 'param=' + this.sku_index.id + '*' + this.submitItem.num;
+
+
 					// console.log(param);
-					
+
 					this.httpPost({
-						url:"/weapp/check/checkLogin"
-					}).then((login)=>{
-						
+						url: "/weapp/check/checkLogin"
+					}).then((login) => {
+
 						uni.navigateTo({
-							url:'../confirm/confirm?'+param
+							url: '../confirm/confirm?' + param
 						})
-						
+
 					});
-					
-					
-					
-					
+
+
+
+
 				}
 
 
@@ -475,68 +565,101 @@
 					url: '../shop_car/shop_car'
 				})
 			},
-			getShopCarNum(){
-				
+			getShopCarNum() {
+
 				this.httpPost({
-					url:"/weapp/goods/getShopCarNum"
-				}).then((re)=>{
-					
+					url: "/weapp/goods/getShopCarNum"
+				}).then((re) => {
+
 					// console.log(re);
-					
-					this.shop_car_num=re.data;
-					
+
+					this.shop_car_num = re.data;
+
 				})
-				
+
 			},
-			college(){
-				
+			college() {
+
 				this.httpPost({
-					url:"/weapp/goods/collect_goods",
-					data:{id:this.item.id}
-				}).then(()=>{
-					
-					this.get_detail();
-				})
-				
-			},
-			checkSku(){
-				
-				// if(this)
-				
-				if(this.item.sku_details.length<=0) return;
-				
-				let temp=this.item.sku_details;
-				
-				let specifications=this.item.sku.specifications;
-				
-				for(let i  in temp){
-					
-					let value=temp[i].value;
-					
-					
-					for(let j in specifications[i].item){
-						
-						if(specifications[i].item[j].name==value) this.$refs.goods_group.specificationBtn(value,i,'',j);
-						
+					url: "/weapp/goods/collect_goods",
+					data: {
+						id: this.item.id
 					}
-					
-					
-				}
-				
-				
-			},
-			addView(){
-				
-				this.httpPost({
-					url:"/weapp/goods/addView",
-					data:{id:this.option.id}
-				}).then((re)=>{
-					
-					
-					
+				}).then(() => {
+
+					this.get_detail(false);
 				})
-				
+
+			},
+			checkSku() {
+
+				// if(this)
+
+				if (this.item.sku_details.length <= 0) return;
+
+				let temp = this.item.sku_details;
+
+				let specifications = this.item.sku.specifications;
+
+				for (let i in temp) {
+
+					let value = temp[i].value;
+
+
+					for (let j in specifications[i].item) {
+
+						if (specifications[i].item[j].name == value) this.$refs.goods_group.specificationBtn(value, i, '', j);
+
+					}
+
+
+				}
+
+
+			},
+			/**
+			 * 点击率
+			 */
+			addView() {
+
+				this.httpPost({
+					url: "/weapp/goods/addView",
+					data: {
+						id: this.option.id
+					}
+				}).then((re) => {
+
+
+
+				})
+
+			},
+			setTime() {
+
+
+				setTimeout(() => {
+
+
+					let snapped_end_time = this.sku_index.snapped_end_time;
+
+
+					if (snapped_end_time) {
+
+
+						this.sku_index.snapped_end_time--;
+
+					}
+
+					this.setTime();
+
+
+
+				}, 1000)
+
+
 			}
+
+
 		},
 		components: {
 			UniPopup,
@@ -555,24 +678,63 @@
 			// this.$refs['goods_sku'].open();
 
 			this.get_detail();
-			
-			
+
+
 			this.getShopCarNum();
-			
+
 			this.addView();
-			
+
+			// this.getObj()
+
+			this.setTime();
+
+
+
 			// this.$refs.goods_group.specificationBtn('1983',0,'',0)
-			
+
+		},
+		computed: {
+
+			end_time() {
+
+				let snapped_end_time = this.sku_index.snapped_end_time;
+
+				if (!snapped_end_time) return ['00', '00', '00'];
+
+				let hour = parseInt(snapped_end_time / 3600);
+
+				if (hour < 10) hour = "0" + hour + "";
+
+
+				let min = parseInt((snapped_end_time - hour * 3600) / 60);
+
+				if (min < 10) min = "0" + min + "";
+
+				let sec = (snapped_end_time - hour * 3600 - min * 60);
+
+				if (sec < 10) sec = "0" + sec + "";
+
+				return [hour, min, sec];
+
+			}
+
 		}
 	}
 </script>
 
 <style>
 	.goods-item {
-		padding: 0 40upx;
-		padding-top: 40upx;
-		padding-bottom: 60upx;
+		/* padding: 0 40upx;
+		padding-top: 20upx;
+		padding-bottom: 60upx; */
 		background-color: #FFFFFF;
+	}
+
+	.goods-item-padding {
+
+		padding: 15upx 30upx;
+		/* padding-top: 20upx; */
+
 	}
 
 	.bot {
@@ -680,5 +842,17 @@
 		font-size: 18upx;
 		color: #FFFFFF;
 
+	}
+
+	.time-item>view {
+
+		color: #FFFFFF;
+		/* padding: 10upx 5upx; */
+		border-radius: .3rem;
+		margin-right: 10upx;
+		height: fit-content;
+		width: 39upx;
+		text-align: center;
+		padding: 5upx 0;
 	}
 </style>

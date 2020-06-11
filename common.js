@@ -65,7 +65,7 @@ Vue.prototype.httpCommon = function(param) {
 			if (param.loading === true) uni.hideLoading()
 			
 			
-			// console.log(res);
+			console.log(res);
 			
 			if(res.data.code>=10&&res.data.code<=30){
 				
@@ -498,6 +498,11 @@ Vue.prototype.getSearchParam=function(option){
 
 
 
+// Vue.prototype.explode=function(){
+	
+// }
+
+
 //-----------------------------------------------------------------------------------------------
 
 
@@ -511,7 +516,10 @@ Vue.filter('saveOne', function(value) {
 
 })
 
-
+/**
+ * php的join
+ * @param {Object} value
+ */
 Vue.filter('join', function(value) {
 
 	if (value === '') return '';
@@ -526,4 +534,34 @@ Vue.filter('join', function(value) {
 
 	return temp;
 
+})
+
+
+Vue.filter('int',(value)=>{
+	
+	
+	return Number(value);
+})
+
+
+Vue.filter('ceil',(value)=>{
+	
+	
+	return Math.ceil(value)
+})
+
+
+Vue.filter('split',(value,arg1)=>{
+	
+	try{
+	
+	if(!value) return '';
+	
+	return value.split('.')[arg1];
+	
+	}catch(e){
+		
+		return '';
+		
+	}
 })

@@ -112,6 +112,10 @@
             "path" : "pages/history/history",
             "style" : {}
         }
+        ,{
+            "path" : "pages/snapped_list/snapped_list",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",

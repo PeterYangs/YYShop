@@ -12,13 +12,13 @@
 				<view class="col">
 
 					<view>
-						<text>{{getObj(info,'address.name')}}</text>
+						<text>{{getObj(info,'address_copy.name')}}</text>
 
-						<text style="margin-left: 30upx;" class="bold">{{getObj(info,'address.phone')}}</text>
+						<text style="margin-left: 30upx;" class="bold">{{getObj(info,'address_copy.phone')}}</text>
 					</view>
 
 					<text style="margin-top: 15upx;color: #666;" class="small-font-size">
-						地址：{{getObj(info,'address.address')}} {{getObj(info,'address.address_detail')}}
+						地址：{{getObj(info,'address_copy.address')}} {{getObj(info,'address_copy.address_detail')}}
 					</text>
 
 				</view>

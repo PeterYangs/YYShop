@@ -22,10 +22,14 @@
 		<view>
 
 
-			<swiper :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+			<swiper :style="'height:'+brannerHeight+'px'"  :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
 				<swiper-item v-for="(v,i) in adList" :key='i'>
-					<view>
-						<image :src="getImgPrefix()+v.img" mode="widthFix" style="width: 100%;"></image>
+					
+					<view v-if="i==0">
+						<image :src="getImgPrefix()+v.img" style="width: 100%;" mode="widthFix" @load="setBrannerHeight"  class="adad" ></image>
+					</view>
+					<view v-else>
+						<image :src="getImgPrefix()+v.img"  style="width: 100%;" mode="widthFix"></image>
 					</view>
 				</swiper-item>
 
@@ -62,17 +66,57 @@
 
 			<view class="row-no-full" style="padding: 40upx 40upx;">
 
-				<view class="col center-col" style="flex: 1;" v-for="(v,i) in 4" :key='i'>
+				<view class="col center-col" style="flex: 1;" @click="goSnapped()">
 
 					<view class="col width-fit">
 						<view>
 							<image src="../../static/logo.png" style="width: 90upx;height: 90upx;"></image>
 						</view>
 
-						<text class="tip-font-size" style="text-align: center;">模块{{v+1}}</text>
+						<text class="tip-font-size" style="text-align: center;">限时秒杀</text>
 					</view>
 
 				</view>
+				
+				<view class="col center-col" style="flex: 1;" >
+				
+					<view class="col width-fit">
+						<view>
+							<image src="../../static/logo.png" style="width: 90upx;height: 90upx;"></image>
+						</view>
+				
+						<text class="tip-font-size" style="text-align: center;">模块2</text>
+					</view>
+				
+				</view>
+				
+				<view class="col center-col" style="flex: 1;" >
+				
+					<view class="col width-fit">
+						<view>
+							<image src="../../static/logo.png" style="width: 90upx;height: 90upx;"></image>
+						</view>
+				
+						<text class="tip-font-size" style="text-align: center;">模块3</text>
+					</view>
+				
+				</view>
+				
+				<view class="col center-col" style="flex: 1;" >
+				
+					<view class="col width-fit">
+						<view>
+							<image src="../../static/logo.png" style="width: 90upx;height: 90upx;"></image>
+						</view>
+				
+						<text class="tip-font-size" style="text-align: center;">模块4</text>
+					</view>
+				
+				</view>
+				
+				
+				
+				
 
 			</view>
 
@@ -214,7 +258,8 @@
 				],
 				messageIndex: 0,
 				recommendGoodsList: [],
-				newGoodsList: []
+				newGoodsList: [],
+				brannerHeight:60
 			}
 		},
 		onLoad() {
@@ -365,6 +410,30 @@
 					uni.stopPullDownRefresh();
 					
 				})
+				
+			},
+			goSnapped(){
+				
+				uni.navigateTo({
+					url:'../snapped_list/snapped_list'
+				})
+				
+				
+			},
+			setBrannerHeight(e){
+				
+				let that=this;
+				wx.createSelectorQuery().selectAll('.adad').boundingClientRect(function (rect) {
+				    // console.log(rect[0].height)
+				    // console.log(rect[0].width)
+					
+					let height=rect[0].height;
+					
+					that.brannerHeight=height;
+					
+				}).exec()
+				
+				// console.log(this.$refs['kkk']);
 				
 			}
 			

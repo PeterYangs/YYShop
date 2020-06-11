@@ -127,8 +127,15 @@
 									<text v-for="(vv,ii) in v.detail.goods_sku_detail" :key='ii'><template v-if="ii!=0">,</template> {{vv.value}}</text>
 								</text>
 							</view>
-
-							<text>¥ {{getObj(v,'detail.price')}}</text>
+							
+							<!-- 价格 -->							
+							<template v-if="getObj(v,'detail.snapped_price')">
+								<text>¥{{getObj(v,'detail.snapped_price')}}</text>
+							</template>
+							
+							<template v-else>
+								<text>¥{{getObj(v,'detail.price')}}</text>
+							</template>
 
 
 						</view>
@@ -268,7 +275,8 @@
 				
 				this.httpPost({
 					url:'/weapp/order/create_order',
-					data:this.item
+					data:this.item,
+					loading:true
 				}).then((re)=>{
 					
 					// console.log(re);
@@ -276,12 +284,18 @@
 					if(re.code==1){
 						
 						// uni.navigateTo({
+							
 						// 	url:''
 						// })
 						
 						uni.redirectTo({
 							url: '../pay/pay?id='+re.data
 						});
+						
+					}else{
+						
+						
+						this.showModal('提示',re.msg);
 						
 					}
 					
@@ -321,7 +335,11 @@
 				
 				for(let i in this.goods_info){
 					
-					total+=Number(this.goods_info[i].detail.price)*Number(this.goods_info[i].num);
+					let price=this.goods_info[i].detail.price;
+					
+					if(this.goods_info[i].detail.snapped_price) price=this.goods_info[i].detail.snapped_price;
+					
+					total+=Number(price)*Number(this.goods_info[i].num);
 				}
 				
 				return total;

@@ -56,19 +56,34 @@
 			return {
 				list: [],
 				list2: [{}, {}, {}, {}, {}],
-				p:1
+				p:1,
+				isbottom:false
 			}
 		},
 		methods: {
 
 			getList() {
-
+				
+				if(this.isbottom==true) return;
+				
 				this.httpPost({
 					url: "/weapp/my/historyList",
 					data:{p:this.p}
 				}).then((re) => {
 
-					this.list = re.data.data;
+					if(re.data.data.length>0){
+						
+						
+						for(let i in re.data.data){
+							
+							this.list.push(re.data.data[i])
+						}
+						
+					}else{
+						
+						this.isbottom=true;
+						
+					} 
 
 				})
 
