@@ -1,35 +1,72 @@
 <template>
-	<view class="background-color" style="min-height: 100vh;">
+	<view class="background-color" style="min-height: 100vh;position: relative;">
 
 		<!-- 搜索框栏 -->
-		<view style="padding: 20upx 50upx;" class="row-no-full center-col">
+		<view  :style="'height:'+headerHeight+'px'" style="position:fixed;top: 0;left: 0;right: 0;margin-bottom: 10upx;z-index: 200;"
+		 class="col  red-background-color center-row">
 
-			<view class="row-no-full" style="background-color: #FFFFFF;flex: 1;">
+			<view class="row-no-full" style="padding: 0upx 50upx;">
+				
+				<view @click="toSearch()" style="background-color: #FFFFFF;flex: 1;padding: 15upx 30upx;border-radius: 2rem" class="row-no-full center-col">
+
+					<view class="row-no-full center-col">
+						<image src="../../static/icon/search.png" style="width: 35upx;height: 35upx;"></image>
+					</view>
+					
+					<view class="gray-color" style="margin-left: 30upx;">搜索商品关键字</view>
+
+				</view>
+				
+				<view class="row-no-full center-col relative" style="margin-left: 30upx;">
+					
+					<view class="absolute" style="top: 0;left: 0;bottom: 0;right: 0;">
+						<button open-type="share" style="width: 100%;height: 100%;opacity: 0;"></button>
+					</view>
+					<image src="../../static/icon/share.png" style="width: 50upx;height: 50upx;"></image>
+					
+								
+				</view>
+
+			</view>
+
+			<!-- <view class="row-no-full" style="background-color: #FFFFFF;flex: 1;">
 				<input @click="toSearch()" class="search-input" placeholder="请搜索商品" placeholder-class="search-placeholder tip-font-size" />
 
-				<view class="row-no-full center-col" style="padding-right: 20upx;" @click="go()">
+				<view class="row-no-full center-col" style="padding-right: 20upx;" >
 					<image style="width: 40upx;height: 40upx;" src="../../static/icon/search.png"></image>
 				</view>
 			</view>
 
-			<view class="row-no-full center-col" style="margin-left: 20upx;">
-				<image src="../../static/icon/message.png" style="width: 55upx;height: 55upx;"></image>
-			</view>
+			<view class="row-no-full center-col relative" style="margin-left: 20upx;">
+				
+				<view class="absolute" style="top: 0;left: 0;bottom: 0;right: 0;">
+					<button open-type="share" style="width: 100%;height: 100%;opacity: 0;"></button>
+				</view>
+				<image src="../../static/icon/share.png" style="width: 50upx;height: 50upx;"></image>
+				
+							
+			</view> -->
 
+		</view>
+		
+		
+		<view :style="'height:'+headerHeight+'px'" style="width: 100vw;margin-bottom: 10upx;">
+			
 		</view>
 
 		<!-- banner广告栏 -->
 		<view>
 
 
-			<swiper :style="'height:'+brannerHeight+'px'"  :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+			<swiper :style="'height:'+brannerHeight+'px'" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
+			 :duration="duration">
 				<swiper-item v-for="(v,i) in adList" :key='i'>
-					
+
 					<view v-if="i==0">
-						<image :src="getImgPrefix()+v.img" style="width: 100%;" mode="widthFix" @load="setBrannerHeight"  class="adad" ></image>
+						<image :src="getImgPrefix()+v.img" style="width: 100%;" mode="widthFix" @load="setBrannerHeight" class="adad"></image>
 					</view>
 					<view v-else>
-						<image :src="getImgPrefix()+v.img"  style="width: 100%;" mode="widthFix"></image>
+						<image :src="getImgPrefix()+v.img" style="width: 100%;" mode="widthFix"></image>
 					</view>
 				</swiper-item>
 
@@ -37,6 +74,7 @@
 
 		</view>
 
+		<!-- 公告 -->
 		<view class="margin-top">
 
 			<view class="messgae row-no-full center-col">
@@ -68,61 +106,61 @@
 
 				<view class="col center-col" style="flex: 1;" @click="goSnapped()">
 
-					<view class="col width-fit">
+					<view class="col width-fit center-col">
 						<view>
-							<image src="../../static/logo.png" style="width: 90upx;height: 90upx;"></image>
+							<image src="../../static/index_img/秒杀.png" style="width: 90upx;height: 90upx;"></image>
 						</view>
 
 						<text class="tip-font-size" style="text-align: center;">限时秒杀</text>
 					</view>
 
 				</view>
-				
-				<view class="col center-col" style="flex: 1;" >
-				
+
+				<view class="col center-col" style="flex: 1;">
+
 					<view class="col width-fit">
 						<view>
 							<image src="../../static/logo.png" style="width: 90upx;height: 90upx;"></image>
 						</view>
-				
+
 						<text class="tip-font-size" style="text-align: center;">模块2</text>
 					</view>
-				
+
 				</view>
-				
-				<view class="col center-col" style="flex: 1;" >
-				
+
+				<view class="col center-col" style="flex: 1;">
+
 					<view class="col width-fit">
 						<view>
 							<image src="../../static/logo.png" style="width: 90upx;height: 90upx;"></image>
 						</view>
-				
+
 						<text class="tip-font-size" style="text-align: center;">模块3</text>
 					</view>
-				
+
 				</view>
-				
-				<view class="col center-col" style="flex: 1;" >
-				
+
+				<view class="col center-col" style="flex: 1;">
+
 					<view class="col width-fit">
 						<view>
 							<image src="../../static/logo.png" style="width: 90upx;height: 90upx;"></image>
 						</view>
-				
+
 						<text class="tip-font-size" style="text-align: center;">模块4</text>
 					</view>
-				
+
 				</view>
-				
-				
-				
-				
+
+
+
+
 
 			</view>
 
 		</view>
 
-
+		<!-- 店家推荐 -->
 		<view class="margin-top" :key='i'>
 
 			<view style="background-color: #FFFFFF;">
@@ -138,18 +176,20 @@
 
 				<view style="margin-top: 30upx;padding-bottom: 30upx;">
 
-					<view >
-						<view class="row-no-full" style="justify-content: space-around;">
-							<view class="col" v-for="(v,i) in recommendGoodsList" :key='i' @click="toGoodsDetail(v.id)" style="width: 20vw;">
+					<view>
+						<view class="row-no-full hide-scroll" style="overflow-x: scroll">
+
+
+							<view class="col center-col" v-for="(v,i) in recommendGoodsList" :key='i' @click="toGoodsDetail(v.id)" style="width: 25vw;flex-shrink:0;">
 
 								<view>
-									<image style="width: 200upx;height: 200upx;" :src="getImgPrefix()+v.main_img"></image>
+									<image style="width: 150upx;height: 150upx;" :src="getImgPrefix()+v.main_img"></image>
 								</view>
 
-								<view class="col">
-									<view class="tip-font-size text-padding" style="overflow: hidden;white-space: nowrap;">{{v.name}}</view>
+								<view class="col" style="overflow: hidden;width: 100%;">
+									<view class="row-no-full tip-font-size text-padding" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;margin: 0 20upx;">{{v.name}}</view>
 
-									<view class="row-no-full text-padding" style="justify-content: space-between;margin-top: 40upx;">
+									<view class="row-no-full text-padding" style="justify-content: space-between;margin-top: 20upx;">
 										<view class="col">
 
 
@@ -158,13 +198,11 @@
 											<view style="text-decoration: line-through;" class="small-font-size gray-color">¥ {{v.min_price}}</view>
 										</view>
 
-										<!-- <view>
-											<image src="../../static/menu/shop_car_selected.png" style="width: 40upx;height: 40upx;"></image>
-										</view> -->
-
 									</view>
 								</view>
 							</view>
+
+
 						</view>
 					</view>
 
@@ -186,9 +224,9 @@
 			</view>
 
 			<view style="flex-wrap: wrap;justify-content:space-between;padding: 0 30upx;" class="row-no-full">
-				
-				
-				<view class="col goods-item2"  v-for="(v,i) in newGoodsList" :key='i' @click="toGoodsDetail(v.id)">
+
+
+				<view class="col goods-item2" v-for="(v,i) in newGoodsList" :key='i' @click="toGoodsDetail(v.id)">
 
 					<view style="overflow: hidden;">
 						<image :src="getImgPrefix()+v.main_img" class="img-border-radius"></image>
@@ -222,9 +260,9 @@
 				</view>
 
 				<view v-if="newGoodsList.length % 2!==0" class="goods-item2" style="opacity: 0;">
-					
+
 				</view>
-				
+
 			</view>
 
 		</view>
@@ -259,12 +297,25 @@
 				messageIndex: 0,
 				recommendGoodsList: [],
 				newGoodsList: [],
-				brannerHeight:60
+				brannerHeight: 60,
+				headerHeight:60
 			}
 		},
 		onLoad() {
 
 			this.getInit();
+
+
+			// #ifdef MP-WEIXIN
+
+
+			wx.showShareMenu();
+
+			// #endif
+
+
+			this.getCompleteRoute(this);
+
 
 		},
 		methods: {
@@ -325,8 +376,8 @@
 
 			},
 			getInit() {
-				
-			
+
+
 				this.getAd();
 
 				// this.switchMessage();
@@ -334,19 +385,19 @@
 				this.getMessage();
 
 				this.getRecommend();
-				
-				return new Promise((success,fail)=>{
-					
-					this.getNewGoods().then((re)=>{
-						
+
+				return new Promise((success, fail) => {
+
+					this.getNewGoods().then((re) => {
+
 						success(re);
 					});
-					
+
 				});
-				
-				
-				
-				
+
+
+
+
 			},
 			/**
 			 * 获取推荐商品
@@ -374,26 +425,26 @@
 			 * 获取新品
 			 */
 			getNewGoods() {
-				
-				return new Promise((success,fail)=>{
-					
+
+				return new Promise((success, fail) => {
+
 					this.httpPost({
 						url: "/weapp/goods/getNewGoods"
 					}).then((re) => {
-					
+
 						// console.log(re);
-						
-					
+
+
 						this.newGoodsList = re.data;
-						
+
 						success(re);
-						
+
 					})
-					
-					
+
+
 				});
-				
-				
+
+
 
 			},
 			toSearch() {
@@ -402,46 +453,46 @@
 					url: '../search/search'
 				})
 			},
-			onPullDownRefresh(){
-				
-				
-				this.getInit().then(()=>{
-					
+			onPullDownRefresh() {
+
+
+				this.getInit().then(() => {
+
 					uni.stopPullDownRefresh();
-					
+
 				})
-				
+
 			},
-			goSnapped(){
-				
+			goSnapped() {
+
 				uni.navigateTo({
-					url:'../snapped_list/snapped_list'
+					url: '../snapped_list/snapped_list'
 				})
-				
-				
+
+
 			},
-			setBrannerHeight(e){
-				
-				let that=this;
-				wx.createSelectorQuery().selectAll('.adad').boundingClientRect(function (rect) {
-				    // console.log(rect[0].height)
-				    // console.log(rect[0].width)
-					
-					let height=rect[0].height;
-					
-					that.brannerHeight=height;
-					
+			setBrannerHeight(e) {
+
+				let that = this;
+				wx.createSelectorQuery().selectAll('.adad').boundingClientRect(function(rect) {
+					// console.log(rect[0].height)
+					// console.log(rect[0].width)
+
+					let height = rect[0].height;
+
+					that.brannerHeight = height;
+
 				}).exec()
-				
+
 				// console.log(this.$refs['kkk']);
-				
+
 			}
-			
+
 
 		}
-		
-		
-	
+
+
+
 	}
 </script>
 
@@ -488,12 +539,11 @@
 		padding-bottom: 20upx;
 		border-radius: 20upx;
 	}
-	
-	.img-border-radius{
+
+	.img-border-radius {
 		border-radius: 20upx;
-		
+
 		width: 320upx;
 		height: 320upx;
 	}
-	
 </style>

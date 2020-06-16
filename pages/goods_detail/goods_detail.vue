@@ -85,7 +85,24 @@
 			</view>
 
 			<!-- 商品名称 -->
-			<view class="tip-font-size" style="margin-top: 30upx;padding: 10upx 30upx;">{{item.name}}</view>
+			<view class="tip-font-size row-no-full" style="margin-top: 30upx;padding: 30upx 30upx;padding-top: 0upx;justify-content: space-between;align-items: flex-start;">
+				
+				<view style="flex: 1;">{{item.name}}</view>
+				
+				<view class="row-no-full center-col relative" style="margin-left: 20upx;margin-top: 10upx;">
+					
+					<view class="absolute" style="top: 0;left: 0;bottom: 0;right: 0;">
+						<button open-type="share" style="width: 100%;height: 100%;opacity: 0;"></button>
+					</view>
+					
+					<image src="../../static/icon/share2.png" style="width: 50upx;height: 50upx;"></image>
+					
+								
+				</view>
+				
+				
+				
+			</view>
 
 
 		</view>
@@ -159,7 +176,12 @@
 			<view class="row-no-full center-col" style="padding: 15upx 30upx;">
 
 				<view class="row-no-full center-col" style="flex: 2;justify-content: space-between;">
-					<view class="col center-row center-col">
+					<view class="col center-row center-col" style="position: relative;">
+						
+						<view style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;opacity: 0;">
+							<button open-type="contact" style="width: 100%;height: 100%;"></button>
+						</view>
+						
 						<image src="../../static/icon/customer.png" style="height: 40upx;width: 40upx;"></image>
 						<text class="small-font-size gray-color" style="margin-top: 10upx;">客服</text>
 					</view>
@@ -355,7 +377,8 @@
 					price_interval: '',
 					collect: '',
 					sku_details: [],
-					min_price: ""
+					min_price: "",
+					main_img:''
 
 				},
 				option: {},
@@ -657,7 +680,8 @@
 				}, 1000)
 
 
-			}
+			},
+			
 
 
 		},
@@ -678,6 +702,8 @@
 			// this.$refs['goods_sku'].open();
 
 			this.get_detail();
+			
+			console.log(this.getCompleteRoute(this));
 
 
 			this.getShopCarNum();
@@ -693,6 +719,28 @@
 			// this.$refs.goods_group.specificationBtn('1983',0,'',0)
 
 		},
+		onShareAppMessage(e){
+			
+			// console.log(e);
+			
+			// uni.share({
+			// 	provider:'weixin',
+			// 	scene:'WXSceneSession',
+			// 	type:0,
+			// 	imageUrl:
+			// })
+			
+			return {
+				
+				title:this.item.name,
+				path:this.getCompleteRoute(this),
+				imageUrl:this.getImgPrefix()+this.item.main_img
+			}
+			
+			
+		},
+		
+		
 		computed: {
 
 			end_time() {

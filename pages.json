@@ -116,6 +116,10 @@
             "path" : "pages/snapped_list/snapped_list",
             "style" : {}
         }
+        ,{
+            "path" : "pages/store_list/store_list",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",

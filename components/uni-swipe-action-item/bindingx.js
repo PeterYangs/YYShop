@@ -65,6 +65,9 @@ export default {
 			})
 		},
 		touchstart(e) {
+			
+			// console.log(e);
+			
 			if (this.isInAnimation) return
 			if (this.stop) return
 			this.stop = true

@@ -68,6 +68,8 @@ export default {
 				index
 			})
 		},
+		appTouchStart(){},
+		appTouchEnd(){},
 		getSize() {
 			const views = uni.createSelectorQuery().in(this)
 			views

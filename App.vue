@@ -190,6 +190,17 @@
 
 		font-size: 22upx;
 	}
+	
+	.tag{
+		
+		font-weight: normal;
+		color: #FFFFFF;
+		padding: 0 10upx;
+		height: 30upx;
+		font-size: 22upx;
+		
+	}
+	
 
 	.title-font-size {
 
@@ -295,5 +306,10 @@
 		background-color: #F56C6C;
 	}
 	
+	
+	.hide-scroll::-webkit-scrollbar{
+		
+		display:none;
+	}
 	
 </style>

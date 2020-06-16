@@ -65,7 +65,7 @@ Vue.prototype.httpCommon = function(param) {
 			if (param.loading === true) uni.hideLoading()
 			
 			
-			console.log(res);
+			// console.log(res);
 			
 			if(res.data.code>=10&&res.data.code<=30){
 				
@@ -498,9 +498,40 @@ Vue.prototype.getSearchParam=function(option){
 
 
 
-// Vue.prototype.explode=function(){
+Vue.prototype.getCompleteRoute=function(context){
+		
+		
+	let route=context.$mp.page.route;
 	
-// }
+	route='/'+route;
+	
+	let options=context.$mp.page.options;
+	
+	
+	if(Object.keys(options).length === 0) return route;
+	
+	route+='?';
+	
+	let index=0;
+	for(let i in options){
+		
+		if(index!==0) route+="&";
+		
+		route+=(i+"="+options[i]);
+		
+		index++;
+		
+	}
+	
+	return route;
+	
+	// console.log(Object.keys(options).length === 0);
+	// console.log(options);
+	
+	// return 
+	
+}
+
 
 
 //-----------------------------------------------------------------------------------------------

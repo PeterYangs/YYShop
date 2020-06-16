@@ -7,7 +7,7 @@
 
 				<uni-swipe-action-item v-for="(v,i) in list" :key='i' :options="options" @click="onClick" @change="change($event,v)">
 
-					<view  @click="selectAddress(v)" class="col item" style="width: 100%;">
+					<view  @click="selectAddress(v)" class="col item" style="width: 100%;padding: 15upx;">
 
 						<view v-if="i!=0" style="height: 1px;background-color: #F2F2F2;padding: 0;margin: 0;"></view>
 

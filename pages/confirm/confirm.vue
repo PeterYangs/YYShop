@@ -84,7 +84,46 @@
 				<view style="height: 1px;background-color: #F2F2F2;margin: 20upx 0;"></view>
 
 			</template>
-
+			
+			<template v-if="item.delivery_type==2">
+				
+				<view  class="row-no-full space center-col" @click="to_store_list()">
+				
+					<view class="col">
+				
+						<view class="row-no-full center-col" style="margin-bottom: 10upx;">
+				
+							<view v-if="getObj(item,'store.is_default')" class="small-font-size row-no-full center-row center-col" style="background-color: #1296db;color: #FFFFFF;padding: 0 12upx;height: 30upx;margin-right: 15upx;">默认</view>
+				
+							<view class="normal-font-size bold">{{getObj(item,'store.name')}}</view>
+				
+				
+						</view>
+						
+						<view class="small-font-size" style="margin-bottom: 15upx;">{{getObj(item,'store.phone')}}</view>
+				
+						<view class="small-font-size" style="margin-bottom: 15upx;">{{getObj(item,'store.province')}}{{getObj(item,'store.city')}}{{getObj(item,'store.area')}}{{getObj(item,'store.detail')}}</view>
+				
+						<!-- <view class="row-no-full">
+				
+							<view>{{item.address.name}}</view>
+							<view style="margin-left: 20upx;">{{item.address.phone}}</view>
+				
+						</view> -->
+				
+				
+				
+					</view>
+				
+					<image src="../../static/icon/right.png" style="width: 50upx;height: 50upx;"></image>
+				
+				
+				</view>
+				
+				<view style="height: 1px;background-color: #F2F2F2;margin: 20upx 0;"></view>
+				
+			</template>
+			
 			<view class="row-no-full">
 
 				<text style="margin-right: 40upx;">备注</text>
@@ -186,7 +225,7 @@
 			return {
 
 				item: {
-					delivery_type: 1,
+					delivery_type: 2,
 					note: '',
 					goods: [
 						// {goods_sku_id:1,num:3}
@@ -201,10 +240,22 @@
 						address: '',
 						address_detail: ''
 					},
-					param:''
+					param:'',
+					store_id:0,
+					store:{
+						name:'',
+						province:'',
+						city:'',
+						area:'',
+						deatil:'',
+						phone:''
+						
+					}
 
 				},
-				goods_info:{}
+				goods_info:{},
+				
+				
 			}
 		},
 		methods: {
@@ -234,6 +285,19 @@
 
 				})
 
+			},
+			getDefaultStore(){
+				
+				this.httpPost({
+					url:'/weapp/store/getDefaultStore'
+				}).then((re)=>{
+					
+					this.item.store=re.data;
+					
+					this.item.store_id=re.data.id;
+					
+				})
+								
 			},
 			to_address_edit() {
 
@@ -301,11 +365,18 @@
 					
 				})
 				
+			},
+			to_store_list(){
+				uni.navigateTo({
+					url:'../store_list/store_list'
+				})
 			}
 		},
 		onLoad(e) {
 
 			this.getDefaultAddress();
+			
+			this.getDefaultStore();
 			
 			// console.log(e.param);
 			

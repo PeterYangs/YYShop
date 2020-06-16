@@ -123,8 +123,12 @@
 
 					<text class="line"></text>
 
-					<view class="row-no-full center-col" style="justify-content: space-between;">
-
+					<view class="row-no-full center-col" style="justify-content: space-between;position: relative;">
+						
+						<view style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;opacity: 0;">
+							<button open-type="contact" style="width: 100%;height: 100%;"></button>
+						</view>
+						
 						<view class="row-no-full center-col">
 							<image src="../../static/icon/chat.png" style="width: 40upx;height: 40upx;"></image>
 							<text>联系客服</text>
