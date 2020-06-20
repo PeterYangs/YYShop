@@ -268,9 +268,15 @@
 	.gray-background-color {
 		background-color: #746d6e;
 	}
+	
+	.blue-background-color {
+	
+		background-color: #009EE2;
+	}
+	
 
 	text {
-		color: #303133;
+		/* color: #303133; */
 	}
 
 	.success-color {
@@ -310,6 +316,12 @@
 	.hide-scroll::-webkit-scrollbar{
 		
 		display:none;
+	}
+	
+	.real-line-height-none{
+		
+		line-height: .7rem;
+		
 	}
 	
 </style>

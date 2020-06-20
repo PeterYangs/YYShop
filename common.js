@@ -428,6 +428,11 @@ Vue.prototype.goUrl = function(url) {
 
 }
 
+/**
+ * 显示弹窗
+ * @param {Object} title
+ * @param {Object} content
+ */
 Vue.prototype.showModal = function(title, content) {
 
 
@@ -497,7 +502,10 @@ Vue.prototype.getSearchParam=function(option){
 }
 
 
-
+/**
+ * 获取当前页面的完整路由，包括参数
+ * @param {Object} context
+ */
 Vue.prototype.getCompleteRoute=function(context){
 		
 		
@@ -532,6 +540,49 @@ Vue.prototype.getCompleteRoute=function(context){
 	
 }
 
+
+
+Vue.prototype.convertTime=function(second,format='H:i:s'){
+	
+	if(second<=0||!second) return [0,0,0,0];
+	
+	
+	switch(format){
+		
+		case'H:i:s':
+			
+			let hour=parseInt(second/(60*60));
+			
+			let min=parseInt((second-hour*3600)/60);
+			
+			let sec=parseInt(second-hour*3600-min*60);
+			
+			// return {[0,hour,min,sec];}
+			return {d:0,hour:hour,min:min,sec:sec}
+			
+			break;
+		
+		
+		case'i:s':
+			
+			
+			let min_=parseInt((second)/60);
+			
+			let sec_=parseInt(second-min_*60);
+			
+			return {d:0,hour:0,min:min_,sec:sec_}
+		
+		
+			break;
+		
+		
+		
+		
+	}
+	
+	
+	
+}
 
 
 //-----------------------------------------------------------------------------------------------

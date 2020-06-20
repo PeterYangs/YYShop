@@ -44,9 +44,9 @@
 						<view style="display: flex;flex-direction: row-reverse;margin-top: 15upx;" class="button-item small-font-size">
 
 
-							<text v-if="v.status==11">查看物流</text>
+							<!-- <text v-if="v.status==11">查看物流</text> -->
 
-							<text v-if="v.status==11" @click="to_after_sale(v)">申请售后</text>
+							<text  @click="to_after_sale(v)">查看详情</text>
 
 							<text v-if="v.status==1" @click="cancel_order(v,i)">取消订单</text>
 
