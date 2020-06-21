@@ -13,3 +13,9 @@ uni-app框架，微信小程序商城
 http://page.yyproject.xin
 
 账号 peter 密码 123456
+
+
+
+ 联系qq：904801074
+
+ 微信：Mr_yy__
